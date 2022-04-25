@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Profile from "../../assets/pics/profile-student.png";
-
+import Filebase64 from 'react-file-base64'
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { currentUser, updateUser } from "../../api/auth"
+
+const API_PROVINCE = 'https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province.json'
+const API_COLLEGE = 'https://raw.githubusercontent.com/MicroBenz/thai-university-database/master/dist/universities-pretty.json'
 
 function ProfileStudent() {
 
   const { user } = useSelector((state) => ({ ...state }));
 
-
+  const [provinces,setProvice] = useState([]) 
+  const [colleges,setCollege] = useState([]) 
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -18,14 +22,26 @@ function ProfileStudent() {
     college: "",
     faculty: "",
     program: "",
-    file: "",
-    // fileprofile: "",
+    transcript: "",
+    img: "",
     editable: true,
   });
 
+  async function fetchProvincesName(){  
+    const response = await fetch(API_PROVINCE)
+    const data = await response.json() 
+    setProvice(data)
+  }
+  async function fetchCollegesName(){  
+    const response = await fetch(API_COLLEGE)
+    const data = await response.json() 
+    setCollege(data)
+  }
+
   useEffect(() => {
-    //code
-        loadData(user.token);
+    fetchProvincesName()
+    fetchCollegesName()
+    loadData(user.token);
     }, []);
   
     const loadData = (authtoken) => {
@@ -51,12 +67,16 @@ function ProfileStudent() {
       editable: false,
     });
 
+    console.log(values.resume)
+
     updateUser(user.token, values)
       .then((res) => {
         console.log(res.data);
+        loadData(user.token);
       })
       .catch((err) => {
-        console.log(err.response.data);
+        console.log(err);
+        loadData(user.token);
       });
   };
 
@@ -65,21 +85,111 @@ function ProfileStudent() {
     setValues({
       editable: true,
     });
-    console.log(image);
-  };
 
-  const [image, setImage] = useState(null);
-
-  const onImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setImage(URL.createObjectURL(e.target.files[0]));
-    }
   };
 
   const handleChange = (e) => {
     setValues({ ...values, 
       [e.target.name]: e.target.value });
   };
+
+  const programList = [
+    "ชีวการแพทย์",
+    "คอมพิวเตอร์",
+    "แมคคาทรอนิกส์",
+    "แมคคาทรอนิกส์และหุ่นยนต์",
+    "ไฟฟ้า",
+    "โยธา",
+    "ธรณี",
+    "อิเล็กทรอนิกส์",
+    "โทรคมนาคม",
+    "เคมี",
+    "เกษตร",
+    "การจัดการและโลจิสติกส์",
+    "ขนส่ง",
+    "ปิโตรเลียม",
+    "ซอฟต์แวร์",
+    "สารสนเทศ",
+    "สิ่งแวดล้อม",
+    "เครื่องกล",
+    "สิ่งทอ",
+    "การตลาด",
+    "การจัดการ ",
+    "การเงินและการธนาคาร ",
+    "การบัญชี",
+    "ระบบสารสนเทศธุรกิจ",
+    "การจัดการการท่องเที่ยวและการบริการ",
+    "ธุรกิจอสังหาริมทรัพย์ ",
+    "การจัดการอุตสาหกรรม",
+    "การประกันภัย",
+    "การจัดการ(กลุ่มวิชาพาณิชยศาสตร์)",
+    "เศรษฐศาสตร์ธุรกิจ",
+    "ภาษาฝรั่งเศสธุรกิจ ",
+    "ภาษาจีนธุรกิจ",
+    "ภาษาญี่ปุ่นธุรกิจ",
+    "ภาษาจีนเพื่อเศรษฐกิจและการค้า",
+    "เทคโนโลยีสารสนเทศ",
+    "วิทยาการโทรคมนาคม",
+    "การวิเคราะห์ข้อมูลเชิงธุรกิจ",
+    "การจัดการเทคโนโลยี",
+    "ธุรกิจดนตรี",
+    "การแสดงดนตรี",
+    "การประชาสัมพันธ์",
+    "การสื่อสารผ่านสื่อใหม่",
+    "การสื่อสารการแสดง",
+    "การออกแบบนิเทศศิลป์",
+    "กระบวนจินตภาพคอมพิวเตอร์",
+    "เทคโนโลยีการอาหาร",
+    "อุตสาหกรรมเกษตร",
+    "สถาปัตยกรรมศาสตร์ ",
+    "สถาปัตยกรรมภายใน",
+    "ออกแบบภายใน",
+    "ออกแบบผลิตภัณฑ์",
+    "คณิตศาสตร์และวิทยาการคอมพิวเตอร์",
+    "เคมี",
+    "ชีววิทยา",
+    "ฟิสิกส์",
+    "พฤกษศาสตร์",
+    "เคมีเทคนิค",
+    "วิทยาศาสตร์สิ่งแวดล้อม",
+    "วิทยาศาสตร์ทางทะเล",
+    "ชีวเคมี",
+    "วัสดุศาสตร์",
+    "จุลชีววิทยา",
+    "เทคโนโลยีทางอาหาร",
+    // ].sort((a, b) => a.length - b.length);
+  ].sort();
+
+  const facultyList = [
+    "เกษตรศาสตร์",
+    "ครุศาสตร์อุตสาหกรรม",
+    "เทคโนโลยีสารสนเทศ",
+    "ประมง",
+    "วิทยาศาสตร์",
+    "วิศวกรรมศาสตร์",
+    "สิ่งแวดล้อม",
+    "กายภาพบำบัด",
+    "การแพทย์แผนไทย",
+    "ทันตแพทยศาสตร์",
+    "เทคนิคการแพทย์",
+    "แพทยศาสตร์",
+    "พยาบาลศาสตร์",
+    "เภสัชศาสตร์",
+    "สหเวชศาสตร์",
+    "สัตวแพทยศาสตร์",
+    "สาธารณสุขศาสตร์",
+    "ทัศนมาตรศาสตร์",
+    "นิติศาสตร์",
+    "นิเทศศาสตร์",
+    "บริหารธุรกิจและการบัญชี",
+    "มนุษยศาสตร์",
+    "รัฐศาสตร์",
+    "ศิลปกรรมศาสตร์",
+    "เศรษฐศาสตร์",
+    "สถาปัตยกรรมศาสตร์",
+    "สังคมศาสตร์",
+    "สังคมสงเคราะห์ศาสตร์",
+  ].sort();
 
   return (
     <div className="mx-80 my-20 bg-gray-200 shadow  rounded-lg font-sans">
@@ -96,25 +206,18 @@ function ProfileStudent() {
           <img
             className="h-36 w-36"
             img
-            src={image === null ? Profile : image}
+            src={values.img === "" ? Profile : values.img}
             alt="profile"
 
             // รูปภาพ
           />
         </div>
         <div className="flex justify-center w-64 mx-80">
-          <input
-            className="form-control block text-base font-normal text-gray-700  bg-white bg-clip-padding border  border-solid border-gray-300 rounded transition ease-in-out mt-3 mb-4 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none "
-            type="file"
-            id="fileProfile"
-            onChange={(e) => {
-              onImageChange(e);
-            }}
-            accept="image/png, image/jpeg"
-            required
-            /*             src={image === null ? Profile : image}
-             */ disabled={values.editable === false}
-          ></input>
+        <Filebase64
+                            mutiple = {false} 
+                            onDone = {({base64})=>setValues ({...values,
+                            img:base64})} 
+                            />
         </div>
 
         <div className="m-4 ">
@@ -169,7 +272,7 @@ function ProfileStudent() {
                 values.editable ? "text-black" : "text-gray-400"
               } focus:text-black focus:ring-blue-300 focus:ring-2`}
               id="phone"
-              type="tel"
+              type="number"
               pattern="[0-9]*"
               onChange={handleChange}
               name="phone"
@@ -224,10 +327,10 @@ function ProfileStudent() {
             } focus:text-black focus:ring-blue-300 focus:ring-2`}
             aria-label="Default select example"
           >
-            <option value="">ระบุมหาลัยที่จบมา</option>
-            <option value="1">จุฬาลงกรณ์มหาวิทยาลัย</option>
-            <option value="2">มหาวิทยาลัยเกษตรศาสตร์</option>
-            <option value="3">มหาวิทยาลัยขอนแก่น</option>
+           <option value="">ระบุมหาลัยที่จบมา</option>
+                        {colleges.map((item)=>
+                        <option>{item.university}</option>
+                        )}
           </select>
 
           <div
@@ -251,10 +354,10 @@ function ProfileStudent() {
               } focus:text-black focus:ring-blue-300 focus:ring-2`}
               aria-label="Default select example"
             >
-              <option value="">ระบุคณะที่จบมา</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+                <option value="">ระบุคณะที่จบมา</option>
+              {facultyList.map((e, idx) => (
+                <option value={e}>{e}</option>
+              ))}
             </select>
             <select
               name="program"
@@ -269,10 +372,11 @@ function ProfileStudent() {
               } focus:text-black focus:ring-blue-300 focus:ring-2`}
               aria-label="Default select example"
             >
-              <option value="">ระบุสาขาที่จบมา</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+                <option value="">ระบุสาขาที่จบมา</option>
+              {programList.map((e, idx) => (
+                <option value={e}>{e}</option>
+              ))}
+                   
             </select>
           </div>
           <label
@@ -282,18 +386,11 @@ function ProfileStudent() {
             ใบทรานสคริปต์ *
           </label>
           <div className="flex justify-left w-72">
-            <input
-              className="form-control block w-full text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out mt-3 mb-4 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              type="file"
-              id="File"
-              onChange={handleChange}
-              name="file"
-              accept="application/pdf"
-              required
-              autoComplete="none"
-              // value={values.File}
-              disabled={values.editable === false}
-            ></input>
+          <Filebase64 
+                            mutiple = {false} 
+                            onDone = {({base64})=>setValues ({...values,
+                            transcript:base64})} />
+          
           </div>
           <div className="flex space-x-12 justify-center mt-4 ">
             <button

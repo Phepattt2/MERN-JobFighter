@@ -296,8 +296,9 @@ import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import "./Postjob.css";
 
 import { createPost } from "../../api/post";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+
 
 const API_PROVINCE = 'https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province.json'
 const API_COLLEGE = 'https://raw.githubusercontent.com/MicroBenz/thai-university-database/master/dist/universities-pretty.json'
@@ -305,6 +306,9 @@ const API_COLLEGE = 'https://raw.githubusercontent.com/MicroBenz/thai-university
 export default function Postjob(){
 
   var { user } = useSelector((state) => ({ ...state }));
+
+  const navigate = useNavigate()
+
   const [provinces,setProvice] = useState([]) 
   const [colleges,setCollege] = useState([]) 
   const [postdata,setPost] = useState({
@@ -320,7 +324,6 @@ export default function Postjob(){
       ,'rate':0
       ,'provinceAddress':''
       ,'postDateExpire':''
-      ,'companyName':''
       ,'companyAddress':''
       ,'boost':false
     })
@@ -350,6 +353,9 @@ export default function Postjob(){
   
   const handleCheck = (e) => {
     var checkBox = document.getElementById("myCheck")
+    // setValue({
+    //   editable: false,
+    // });
     if (checkBox.checked === true){
         console.log('checked')
         setPost({
@@ -376,7 +382,7 @@ export default function Postjob(){
   const handleSubmit = (e) => {
       e.preventDefault()
       console.log('this is working')
-      let keyP = ['desc' ,'college','faculty' ,'program' ,'jobType' ,'position','wageMin','wageMax' ,'rate' ,'provinceAddress','postDateExpire','companyName','companyAddress','img']
+      let keyP = ['desc' ,'college','faculty' ,'program' ,'jobType' ,'position','wageMin','wageMax' ,'rate' ,'provinceAddress','postDateExpire','companyAddress','img']
       for (var i =0 ; i < keyP.length ;i++){
         if (postdata[keyP[i]] === '' || postdata[keyP[i]] === 0){
           delete postdata[keyP[i]]
@@ -386,15 +392,15 @@ export default function Postjob(){
       
       createPost(user.token, postdata)
         .then((res) => {
-            console.log(res.data);
+            console.log('res',res.data);
+            navigate('/paymentcompany')
         })
         .catch((err) => {
             console.log(err.response.data);
         });
     };
 
-  
-
+    
     const notosan1=createTheme({
         typography:{
           subtitle1:{
@@ -422,8 +428,147 @@ export default function Postjob(){
           }
         },
       });
-    // const initialValues = {detailwork: "",};
-    // const [formValues, setFormValues]=useState();
+
+      
+      const programList = [
+        "ชีวการแพทย์",
+        "คอมพิวเตอร์",
+        "แมคคาทรอนิกส์",
+        "แมคคาทรอนิกส์และหุ่นยนต์",
+        "ไฟฟ้า",
+        "โยธา",
+        "ธรณี",
+        "อิเล็กทรอนิกส์",
+        "โทรคมนาคม",
+        "เคมี",
+        "เกษตร",
+        "การจัดการและโลจิสติกส์",
+        "ขนส่ง",
+        "ปิโตรเลียม",
+        "ซอฟต์แวร์",
+        "สารสนเทศ",
+        "สิ่งแวดล้อม",
+        "เครื่องกล",
+        "สิ่งทอ",
+        "การตลาด",
+        "การจัดการ ",
+        "การเงินและการธนาคาร ",
+        "การบัญชี",
+        "ระบบสารสนเทศธุรกิจ",
+        "การจัดการการท่องเที่ยวและการบริการ",
+        "ธุรกิจอสังหาริมทรัพย์ ",
+        "การจัดการอุตสาหกรรม",
+        "การประกันภัย",
+        "การจัดการ(กลุ่มวิชาพาณิชยศาสตร์)",
+        "เศรษฐศาสตร์ธุรกิจ",
+        "ภาษาฝรั่งเศสธุรกิจ ",
+        "ภาษาจีนธุรกิจ",
+        "ภาษาญี่ปุ่นธุรกิจ",
+        "ภาษาจีนเพื่อเศรษฐกิจและการค้า",
+        "เทคโนโลยีสารสนเทศ",
+        "วิทยาการโทรคมนาคม",
+        "การวิเคราะห์ข้อมูลเชิงธุรกิจ",
+        "การจัดการเทคโนโลยี",
+        "ธุรกิจดนตรี",
+        "การแสดงดนตรี",
+        "การประชาสัมพันธ์",
+        "การสื่อสารผ่านสื่อใหม่",
+        "การสื่อสารการแสดง",
+        "การออกแบบนิเทศศิลป์",
+        "กระบวนจินตภาพคอมพิวเตอร์",
+        "เทคโนโลยีการอาหาร",
+        "อุตสาหกรรมเกษตร",
+        "สถาปัตยกรรมศาสตร์ ",
+        "สถาปัตยกรรมภายใน",
+        "ออกแบบภายใน",
+        "ออกแบบผลิตภัณฑ์",
+        "คณิตศาสตร์และวิทยาการคอมพิวเตอร์",
+        "เคมี",
+        "ชีววิทยา",
+        "ฟิสิกส์",
+        "พฤกษศาสตร์",
+        "เคมีเทคนิค",
+        "วิทยาศาสตร์สิ่งแวดล้อม",
+        "วิทยาศาสตร์ทางทะเล",
+        "ชีวเคมี",
+        "วัสดุศาสตร์",
+        "จุลชีววิทยา",
+        "เทคโนโลยีทางอาหาร",
+        // ].sort((a, b) => a.length - b.length);
+      ].sort();
+    
+      const facultyList = [
+        "เกษตรศาสตร์",
+        "ครุศาสตร์อุตสาหกรรม",
+        "เทคโนโลยีสารสนเทศ",
+        "ประมง",
+        "วิทยาศาสตร์",
+        "วิศวกรรมศาสตร์",
+        "สิ่งแวดล้อม",
+        "กายภาพบำบัด",
+        "การแพทย์แผนไทย",
+        "ทันตแพทยศาสตร์",
+        "เทคนิคการแพทย์",
+        "แพทยศาสตร์",
+        "พยาบาลศาสตร์",
+        "เภสัชศาสตร์",
+        "สหเวชศาสตร์",
+        "สัตวแพทยศาสตร์",
+        "สาธารณสุขศาสตร์",
+        "ทัศนมาตรศาสตร์",
+        "นิติศาสตร์",
+        "นิเทศศาสตร์",
+        "บริหารธุรกิจและการบัญชี",
+        "มนุษยศาสตร์",
+        "รัฐศาสตร์",
+        "ศิลปกรรมศาสตร์",
+        "เศรษฐศาสตร์",
+        "สถาปัตยกรรมศาสตร์",
+        "สังคมศาสตร์",
+        "สังคมสงเคราะห์ศาสตร์",
+      ].sort();
+
+      const jobTypeList = [
+        "เกษตร/จัดสวน/ปศุสัตว์/ประมง/เหมืองแร่",
+        "งานขาย",
+        "เขียนแบบ/งานDrawing/AutoCad/ออกแบบวิศวกรรม",
+        "กฎหมาย",
+        "คอมพิวเตอร์/IT/โปรแกรมเมอร์",
+        "งานการเงิน-ธนาคาร",
+        "งานขนส่ง-คลังสินค้า",
+        "งานนำเข้า-ส่งออก",
+        "งานบริการลูกค้า Call Center",
+        "งานบัญชี",
+        "งานบันเทิง/นักแสดง/นางแบบ/นักร้อง",
+        "จัดซื้อ/ธุรการ/ประสานงานทั่วไป",
+        "เจ้าหน้าที่ความปลอดภัย(จป.)/สิ่งแวดล้อม/ISO",
+        "ช่างเทคนิค/อิเลคโทรนิค/ซ่อมบำรุง/ช่างพิมพ์",
+        "นักเขียน/บรรณาธิการ/พิสูจน์อักษร/Copywriter/นักแปลภาษาบุคคล/ฝึกอบรม",
+        "ผลิต/ควบคุมคุณภาพ/โรงงาน",
+        "ผู้จัดการ/ผู้อำนวยการ/MD/CEO",
+        "แผนกรักษาความปลอดภัย/งานอาคารจอดรถ",
+        "แพทย์/เภสัชกร/สาธารณสุข",
+        "ภูมิศาสตร์/แผนที่/GIS/ผังเมือง",
+        "แม่บ้าน/พี่เลี้ยง/คนสวน",
+        "โยธา/สำรวจ/สถาปัตย์/มัณฑนากร/ประเมินราคา",
+        "ล่าม/มัคคุเทศก์/จองห้อง/จองตั๋ว",
+        "เลขานุการ",
+        "วิจัย/วิเคราะห์ (เศรษฐศาสตร์/หุ้น/ประกันภัย/ธนาคาร)",
+        "วิทยาศาสตร์/Lab/วิจัยพัฒนา",
+        "วิศวกร",
+        "ศิลปะ/กราฟฟิค/ออกแบบ/ช่างภาพ",
+        "ส่งเอกสาร/ขับรถ/ส่งผลิตภัณฑ์",
+        "สื่อสารมวลชน/นักข่าว/งานวิทยุ/โทรทัศน์/หนังสือพิมพ์",
+        "สุขภาพ/โภชนาการ/ความงาม/ฟิตเนส/สปา",
+        "เสื้อผ้า/สิ่งทอ/ช่างแพทเทิร์นdropdown",
+        "ออกแบบเว็บไซต์/Web",
+        "อัญมณีและเครื่องประดับ",
+        "อาจารย์/ครู/งานวิชาการ",
+        "อาหาร/เครื่องดื่ม/กุ๊ก/บาร์เทนเดอร์/พนักงานเสิร์ฟ",
+        "งาน Part-time/พนักงานชั่วคราว",
+        "Freelance",
+        "อื่นๆ",
+      ].sort();
     return(
       
     <ThemeProvider theme={notosan1}>
@@ -446,7 +591,7 @@ export default function Postjob(){
             </Typography>
             {/* <label for="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"/> */}
             <textarea name="desc" className="message" rows="12" class="resize-none p-2.5 w-11/12 ml-7 mt-2 rounded-lg ring-2 ring-black"
-            placeholder="กรุณากรอกรายละเอียด..." onChange={handleChange}
+            placeholder="กรุณากรอกรายละเอียด..."  required onChange={handleChange}
             ></textarea>
         
     
@@ -463,8 +608,11 @@ export default function Postjob(){
                 <Typography variant="body2">
                         มหาลัย
                 </Typography>
-                <select name = "college" className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" onChange={handleChange}>
-                <option></option>
+                <select name = "college" 
+                required 
+                className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" 
+                onChange={handleChange}>
+                <option value="">ระบุมหาลัยที่จบมา</option>
                         {colleges.map((item)=>
                         <option>{item.university}</option>
                         )}
@@ -475,11 +623,11 @@ export default function Postjob(){
                 <Typography variant="body2">
                         คณะ
                 </Typography>
-                <select name ="faculty" className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" onChange={handleChange}>
-                <option>United States</option>
-                <option>Canada</option>
-                <option>France</option>
-                <option>Germany</option>
+                <select name ="faculty" required className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" onChange={handleChange}>
+                <option value="">ระบุคณะที่จบมา</option>
+              {facultyList.map((e, idx) => (
+                <option value={e}>{e}</option>
+              ))}
                 </select>
                 </div>
 
@@ -487,11 +635,11 @@ export default function Postjob(){
                 <Typography variant="body2">
                         สาขา
                 </Typography>
-                <select name="program" className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" onChange={handleChange}>
-                <option>United States</option>
-                <option>Canada</option>
-                <option>France</option>
-                <option>Germany</option>
+                <select name="program" required className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" onChange={handleChange}>
+                <option value="">ระบุสาขาที่จบมา</option>
+              {programList.map((e, idx) => (
+                <option value={e}>{e}</option>
+              ))}
                 </select>
                 </div>
                 
@@ -503,25 +651,25 @@ export default function Postjob(){
                 <Typography variant="body2">
                         ประเภทงาน
                 </Typography>
-                <select name="jobType" className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" onChange={handleChange}>
-                <option>สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง</option>
-                <option>Canada</option>
-                <option>France</option>
-                <option>Germany</option>
+                <select name="jobType" required   className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" onChange={handleChange}>
+                <option>ระบุประเภทงาน</option>
+                {jobTypeList.map((e, idx) => (
+                    <option value={e}>{e}</option>
+                  ))}
                 </select>
                 </div>
 
                 <div className="flex space-x-2">
-                <Typography variant="body2">
-                        ตำแหน่ง
-                </Typography>
-                <select name="position" className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" onChange={handleChange}>
-                <option>United States</option>
-                <option>Canada</option>
-                <option>France</option>
-                <option>Germany</option>
-                </select>
-                </div>
+                    <Typography variant="body2">ตำแหน่ง</Typography>
+                    <input
+                      type="text"
+                      name="position"
+                      required
+                      onChange={handleChange}
+                      className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5"
+                      placeholder="กรุณากรอกตำแหน่ง"
+                    ></input>
+                  </div>
 
                 {/* เช็คใน input ใส่ได้แค่เลข */}
                 <div className="flex space-x-2">
@@ -530,13 +678,13 @@ export default function Postjob(){
                 </Typography>
                 <input name = 'wageMin' type="number"
                 className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[80px] p-2.5"
-                placeholder="ต่ำสุด" onChange={handleChange} onKeyPress = {isNumberInput} ></input>
+                placeholder="ต่ำสุด" required onChange={handleChange} onKeyPress = {isNumberInput} ></input>
                 <Typography variant="body2">
                         -
                 </Typography>
                 <input name = 'wageMax' type="number"
                 className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[80px] p-2.5"
-                placeholder="สูงสุด" onChange={handleChange} onKeyPress = {isNumberInput}></input>
+                placeholder="สูงสุด" required onChange={handleChange} onKeyPress = {isNumberInput}></input>
                 </div>
                 
               </div>
@@ -550,7 +698,7 @@ export default function Postjob(){
                 </Typography>
                 <input name = 'rate' type="number"
                 className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[80px] p-2.5"
-                placeholder="จำนวน" onChange={handleChange} onKeyPress = {isNumberInput}></input>
+                placeholder="จำนวน" required onChange={handleChange} onKeyPress = {isNumberInput}></input>
                 
                 </div>
 
@@ -558,8 +706,8 @@ export default function Postjob(){
                 <Typography variant="body2">
                         จังหวัดของสถานประกอบการ
                 </Typography>
-                <select name="provinceAddress" className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" onChange={handleChange}>
-                <option></option>
+                <select name="provinceAddress" required className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" onChange={handleChange}>
+                <option value="">ระบุจังหวัดของสถานประกอบการ</option>
                         {provinces.map((item)=>
                         <option>{item.name_th}</option>
                         )}
@@ -571,12 +719,13 @@ export default function Postjob(){
                 <Typography variant="body2">
                         ระยะเวลาการโพสต์
                 </Typography>
-                <select name="postDateExpire" className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" onChange={handleChange}>
-                <opion></opion>
-                <option>United States</option>
-                <option>Canada</option>
-                <option>France</option>
-                <option>Germany</option>
+                <select name="postDateExpire" required className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" 
+                onChange={handleChange}>
+                <option value="">ระบุระยะเวลาการโพสต์</option>
+                <option value= '1' >1 สัปดาห์</option>
+                <option value= '2' >2 สัปดาห์</option>
+                <option value= '3' >3 สัปดาห์</option>
+                <option value= '4' >4 สัปดาห์</option>
                 </select>
                 </div>
                 
@@ -589,7 +738,7 @@ export default function Postjob(){
             <Typography variant="body1">
               สถานที่ประกอบการของบริษัท
             </Typography>
-            <textarea name ='companyAddress'className="message" rows="4" class="resize-none p-2.5 w-11/12 ml-6 mt-2 rounded-lg ring-2 ring-black" placeholder="กรุณากรอกรายละเอียด..." onChange={handleChange}></textarea>
+            <textarea name ='companyAddress' required className="message" rows="4" class="resize-none p-2.5 w-11/12 ml-6 mt-2 rounded-lg ring-2 ring-black" placeholder="กรุณากรอกรายละเอียด..." onChange={handleChange}></textarea>
             </div>
             
             <div class="flex items-center pl-8 pt-3">
@@ -603,19 +752,22 @@ export default function Postjob(){
 
             </div>
 
-            <a href="/paymentcompany" class="text-decoration-none">
+    
             <div className="flex items-center justify-center">
+     
             <button
               class="bg-[#24AB82] drop-shadow-md font-bold text-white text-2xl rounded-xl px-6 py-2.5 mt-5 mb-4 hover:bg-[#1F795E] hover:ring-2 hover:ring-white focus:ring-2 focus:ring-white focus:outline-none " 
             onChange={handleChange} 
             
             >
+             
               <Typography variant="body1">
-              {/* <Link to={'/paymentcompany/'+} */}หน้าต่อไป
+              หน้าต่อไป
               </Typography>
                   </button>
+          
             </div>
-            </a>
+       
 
 
             

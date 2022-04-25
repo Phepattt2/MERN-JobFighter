@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Profile from "../../assets/pics/profile-company.png";
-
+import Filebase64 from 'react-file-base64'
 import { useSelector } from "react-redux";
 
 import { currentUser, updateUser } from "../../api/auth";
 
+const API_PROVINCE = 'https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province.json'
+const API_COLLEGE = 'https://raw.githubusercontent.com/MicroBenz/thai-university-database/master/dist/universities-pretty.json'
+
 function ProfileCompany() {
   const { user } = useSelector((state) => ({ ...state }));
   
+  const [provinces,setProvice] = useState([]) 
+  const [colleges,setCollege] = useState([]) 
   const [values, setValues] = useState({
     name: "",
     email: "",
@@ -16,11 +21,24 @@ function ProfileCompany() {
     business: "",
     details: "",
     benefit: "",
+    img: "",
     editable: true,
   });
 
+  async function fetchProvincesName(){  
+    const response = await fetch(API_PROVINCE)
+    const data = await response.json() 
+    setProvice(data)
+  }
+  async function fetchCollegesName(){  
+    const response = await fetch(API_COLLEGE)
+    const data = await response.json() 
+    setCollege(data)
+  }
+
   useEffect(() => {
-    //code
+    fetchProvincesName()
+    fetchCollegesName()
     loadData(user.token);
   }, []);
 
@@ -46,9 +64,11 @@ function ProfileCompany() {
     updateUser(user.token, values)
       .then((res) => {
         console.log(res.data);
+        loadData(user.token);
       })
       .catch((err) => {
         console.log(err.response.data);
+        loadData(user.token);
       });
   };
 
@@ -58,20 +78,56 @@ function ProfileCompany() {
       editable: true,
     });
   };
-  const [image, setImage] = useState(null);
-
-  const onImageChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      setImage(URL.createObjectURL(e.target.files[0]));
-    }
-  };
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
-  /* const fix = true;
-    console.log(fix); */
+  
+  const bisinessList = [
+    "กระดาษ - อุปกรณ์สำนักงาน",
+    "การเกษตร",
+    "การขนส่ง",
+    "การขายปลีก",
+    "การโฆษณา",
+    "การท่องเที่ยว",
+    "การนำเข้า - การส่งออก",
+    "การบริการ",
+    "การประกันภัย - การประกันชีวิต",
+    "การพิมพ์ - สิ่งพิมพ์",
+    "การศึกษา",
+    "การออกแบบ - การตกแต่งภายใน",
+    "คลินิก -โรงพยาบาล",
+    "ความบันเทิง",
+    "คอมพิวเตอร์ - ไอที",
+    "เครื่องสำอาง ยา และเวชภัณฑ์",
+    "เงินทุน - หลักทรัพย์",
+    "เชื้อเพลิง - พลังงาน",
+    "ที่ปรึกษา",
+    "ที่ปรึกษาด้านจัดหางาน",
+    "ธนาคาร",
+    "บรรจุภัณฑ์",
+    "บัญชี และกฎหมาย",
+    "พลาสติก - เคมีภัณฑ์",
+    "พาณิชย์",
+    "เฟอร์นิเจอร์ - เครื่องใช้ในบ้าน",
+    "ไฟฟ้า",
+    "ยานยนต์",
+    "ราชการ รัฐวิสาหกิจ และมูลนิธิ",
+    "โรงแรม สปา และสนามกอล์ฟ",
+    "โลหะ",
+    "วัสดุก่อสร้าง - รับเหมาก่อสร้าง",
+    "สิ่งทอ",
+    "สินเชื่อ - บัตรเครดิต",
+    "สื่อสารโทรคมนาคม",
+    "สื่อสารมวลชน",
+    "อสังหาริมทรัพย์",
+    "อัญมณี - เครื่องประดับ",
+    "อาหาร เครื่องดื่ม และยาสูบ",
+    "อิเล็กทรอนิกส์",
+    "อื่นๆ",
+  ].sort();
+  
   return (
     <div className="mx-80 my-20 bg-gray-200 shadow  rounded-lg font-sans">
       {/*         <div> {fix ? "a" : "b"} </div>
@@ -87,26 +143,18 @@ function ProfileCompany() {
           <img
             className="h-36 w-36"
             img
-            src={image === null ? Profile : image}
+            src={values.img === "" ? Profile : values.img}
             alt="profile"
 
             // รูปภาพ
           />
         </div>
         <div className="flex justify-center w-64 mx-80">
-          <input
-            className="form-control block text-base font-normal text-gray-700  bg-white bg-clip-padding border  border-solid border-gray-300 rounded transition ease-in-out mt-3 mb-4 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none "
-            type="file"
-            id="fileProfile"
-            /* onChange={this.setValue("fileProfile")} */
-            onChange={(e) => {
-              onImageChange(e);
-            }}
-            /* value={fileProfile} */
-            accept="image/png, image/jpeg"
-            required
-            disabled={values.editable === false}
-          ></input>
+        <Filebase64
+                            mutiple = {false} 
+                            onDone = {({base64})=>setValues ({...values,
+                            img:base64})} 
+                            />
         </div>
 
         <div className="m-4 ">
@@ -190,10 +238,12 @@ function ProfileCompany() {
             } focus:text-black focus:ring-blue-300 focus:ring-2`}
             aria-label="Default select example"
           >
-            <option value="">ระบุลักษณะธุรกิจ</option>
-            <option value="1">บลาๆ</option>
-            <option value="2">บลาๆๆ</option>
-            <option value="3">บลาๆๆๆ</option>
+                <option value="">ระบุลักษณะธุรกิจ</option>
+            {bisinessList.map((e, idx) => (
+              <option key={idx} value={e}>
+                {e}
+              </option>
+            ))}
           </select>
           <label
             className="block text-gray-700 text-sm font-bold mb-2 mt-4"

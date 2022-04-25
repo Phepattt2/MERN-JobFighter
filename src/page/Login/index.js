@@ -62,9 +62,9 @@ export default function Login(){
     if (role === "admin") {
       navigate("/admin/manage");
     } else if (role === 'student'){
-      navigate("/Homeuser");
+      navigate("/homestudent");
     } else {
-      navigate("/Homecompany")
+      navigate("/homecompany")
     }
   };
 
@@ -81,9 +81,10 @@ export default function Login(){
           type: "LOGIN",
           payload: {
             token: res.data.token,    // ***
+            role: res.data.payload.user.role,
             id:   res.data.payload.user.id,
             user: res.data.payload.user.name,
-            role: res.data.payload.user.role,
+           
             
           },
         });
