@@ -8,8 +8,8 @@ export const signIn = async (form) => {
     return await axios.post("http://localhost:5000/users/signin", form)
 }
 
-export const updateUser = async (authtoken,value,id) => {
-  return await axios.put("http://localhost:5000/users/update-user/"+id,
+export const updateUser = async (authtoken,value) => {
+  return await axios.put("http://localhost:5000/users/update-user",
     value,   
     {
     headers: {

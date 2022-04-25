@@ -9,7 +9,7 @@ import "./Postjob.css";
 
 
 
-export default function Postjob(){
+export default function EditPost(){
   const params = useParams();
   const navigate = useNavigate();
 
@@ -18,7 +18,6 @@ export default function Postjob(){
 
   const [post, setPost] = useState({
     desc: "",
-    benefit: "",
     college: "",
     program: "",
     faculty: "",
@@ -28,7 +27,7 @@ export default function Postjob(){
     rate: "",
     provinceAddress: "",
     companyAddress: "",
-    boost: "",
+    boost: null,
 
   });
 
@@ -119,19 +118,12 @@ export default function Postjob(){
                 รายละเอียดงาน
             </Typography>
             {/* <label for="message" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"/> */}
-            <textarea  className="message" rows="4" class="resize-none p-2.5 w-11/12 ml-7 mt-2 rounded-lg ring-2 ring-black"
+            <textarea  className="message" rows="12" class="resize-none p-2.5 w-11/12 ml-7 mt-2 rounded-lg ring-2 ring-black"
             placeholder="กรุณากรอกรายละเอียด..."  name="desc" value={post.desc} onChange={handleChange}  
             ></textarea>
         
-            {/* สวัสดิการ */}
-            <div className="pt-3">
-            <Typography variant="body1">
-                สวัสดิการ
-            </Typography>
-            </div>
-            <textarea className="message" rows="4" class="resize-none p-2.5 w-11/12 ml-7 mt-2 rounded-lg ring-2 ring-black" placeholder="กรุณากรอกรายละเอียด..."
-              name="benefit" value={post.benefit} onChange={handleChange}  >
-            </textarea>
+
+          
             
 
             {/* คุณสมบัติของผู้สมัคร */}

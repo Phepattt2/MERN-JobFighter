@@ -5,15 +5,16 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import logo from '../../assets/pics/Lovepik_com-401693242-office-girl.png';
 import './Login.css';
 import { ClassNames, useTheme } from "@emotion/react";
 import { useMediaQuery } from 'react-responsive';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 
+
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate, Link } from "react-router-dom"; 
 
 //redux
 import { useDispatch } from "react-redux";
@@ -192,7 +193,7 @@ export default function Login(){
             {/* link 2 อันล่าง */}
             <Grid container justifyContent="flex-end" alignItems="flex-end">
               <Grid item >
-                <Link href="/forgotpass" style={{fontSize: "18px",color: "black"}} variant="body2" underline="hover">
+                <Link to={"/forgotpass"} style={{fontSize: "18px",color: "black"}} variant="body2" underline="hover">
                   <Typography variant="body2">
                   ลืมรหัสผ่าน?    
                   </Typography>
@@ -201,7 +202,7 @@ export default function Login(){
             </Grid>
             <Grid container justifyContent="flex-end" alignItems="flex-end">
               <Grid item>
-                <Link href="/signupstudent" style={{fontSize: "18px",color: "black"}} variant="body2" underline="hover">
+                <Link to={"/signupstudent"} style={{fontSize: "18px",color: "black"}} variant="body2" underline="hover">
                 <Typography variant="body2">
                   ลงทะเบียนสำหรับผู้ใช้ใหม่    
                 </Typography>

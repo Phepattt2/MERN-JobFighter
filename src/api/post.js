@@ -33,6 +33,16 @@ export const currentPost = async (id) => {
   return await axios.get("http://localhost:5000/posts/"+id)
 }
 
+export const createPost = async (authtoken, value) => {
+  return await axios.post("http://localhost:5000/posts/",
+    value,
+    {
+      headers: {
+        Authorization: `Bearer ${authtoken}`,
+      },
+    }
+  );
+};
 
 export const updatePost = async (authtoken, value, id) => {
   return await axios.put("http://localhost:5000/posts/edit-post/" + id,

@@ -15,6 +15,7 @@ const HomeUser = () => {
       <div className="row">
         <div className="col-md-6 offset-md-3">
           <h1>company</h1>
+          <Link to={'/profileCompany'} >edit company</Link>
           <Link to={'/companypost'} >                   posts</Link>
           <Link to={'/postjob'} >                   create</Link>
           <Link to={'/applicantcompany'} >                   applicaiton</Link>

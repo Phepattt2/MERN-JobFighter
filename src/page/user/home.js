@@ -15,7 +15,7 @@ const HomeUser = () => {
       <div className="row">
         <div className="col-md-6 offset-md-3">
           <h1>student</h1>
-          <Link to={'/profileStudent/'+ user.id} >edit user</Link>
+          <Link to={'/profileStudent'} >edit user</Link>
           
           <Link to={'/historystudent'} >  history</Link>
 

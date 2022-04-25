@@ -1,97 +1,85 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Profile from "../../assets/pics/profile-student.png";
 
-function Prosile_st() {
-  const [value, setValue] = useState({
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { currentUser, updateUser } from "../../api/auth"
+
+function ProfileStudent() {
+
+  const { user } = useSelector((state) => ({ ...state }));
+
+
+  const [values, setValues] = useState({
     name: "",
     email: "",
-    tel: "",
+    phone: "",
     address: "",
-    univercity: "",
+    college: "",
     faculty: "",
-    branch: "",
+    program: "",
     file: "",
+    // fileprofile: "",
     editable: true,
   });
+
+  useEffect(() => {
+    //code
+        loadData(user.token);
+    }, []);
+  
+    const loadData = (authtoken) => {
+ 
+      currentUser(authtoken)
+        .then((res) => {  
+          
+          setValues({...values,...res.data});
+          console.log(res.data)
+        })
+        .catch((err) => {
+          //err
+          console.log("Error loadData", err.response.data);
+        });
+    };
+
+
 
   const handleSubmit = (e) => {
     alert("Saved");
     e.preventDefault();
-    setValue({
+    setValues({
       editable: false,
     });
+
+    updateUser(user.token, values)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
   };
+
   const handleEdit = (e) => {
     alert("Change");
-    setValue({
+    setValues({
       editable: true,
     });
     console.log(image);
   };
+
   const [image, setImage] = useState(null);
 
-  const onImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      setImage(URL.createObjectURL(event.target.files[0]));
+  const onImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setImage(URL.createObjectURL(e.target.files[0]));
     }
   };
 
   const handleChange = (e) => {
-    setValue({ ...value, [e.target.name]: e.target.value });
+    setValues({ ...values, 
+      [e.target.name]: e.target.value });
   };
-
-  /* อัพเดทรูปที่ใส่เข้าไป */
-
-  /* componentDidUpdate(prevProps, prevState) {
-    if (value.fileProfile !== prevState.fileProfile) {
-      console.log("update");
-      if (!value.fileProfile) {
-        this.setState({
-          ...value,
-          preview: undefined,
-        });
-        return;
-      }
- */
-  /* แปลง  url ให้เป็นรูป */
-  /*       const tmp = URL.createObjectURL(value.fileProfile);
-      console.log(tmp);
-      this.setState({
-        ...value,
-        preview: tmp,
-      });
-      console.log(value.fileProfile);
-    }
-  } */
-  /* 
-  handleFile(e) {
-    if (!e.target.files || e.target.files.length === 0) {
-      this.setState({
-        ...value,
-        fileProfile: undefined,
-      });
-      return;
-    }
-    this.setState({
-      ...value,
-      fileProfile: e.target.files[0],
-    });
-  } */
-
-  /* render() {
-    const {
-      name,
-      email,
-      tel,
-      address,
-      univercity,
-      faculty,
-      branch,
-      file,
-      fileProfile,
-      preview,
-    } = value; */
-  /* const fix = true; */
 
   return (
     <div className="mx-80 my-20 bg-gray-200 shadow  rounded-lg font-sans">
@@ -125,7 +113,7 @@ function Prosile_st() {
             accept="image/png, image/jpeg"
             required
             /*             src={image === null ? Profile : image}
-             */ disabled={value.editable === false}
+             */ disabled={values.editable === false}
           ></input>
         </div>
 
@@ -138,16 +126,17 @@ function Prosile_st() {
           </label>
           <input
             className={`bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal w-full ${
-              value.editable ? "text-black" : "text-gray-400"
+              values.editable ? "text-black" : "text-gray-400"
             } focus:text-black focus:ring-blue-300 focus:ring-2`}
             id="name"
             type="name"
             onChange={handleChange}
             name="name"
             placeholder="ชื่อ-นามสกุล"
+            value={values.name}
             required
             autoComplete="none"
-            disabled={value.editable === false}
+            disabled={values.editable === false}
 
             /* {...(fix === true ? abled : disabled)} */
           />
@@ -162,31 +151,33 @@ function Prosile_st() {
           <div className="flex flex-row ml-auto space-x-20 items-center">
             <input
               className={`bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal w-96 ${
-                value.editable ? "text-black" : "text-gray-400"
+                values.editable ? "text-black" : "text-gray-400"
               } focus:text-black focus:ring-blue-300 focus:ring-2`}
               id="email"
               type="email"
               onChange={handleChange}
               name="email"
               placeholder="jane@example.com"
+              value={values.email}
               required
               autoComplete="none"
-              disabled={value.editable === false}
+              disabled={values.editable === false}
             />
 
             <input
               className={`bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal w-96 ${
-                value.editable ? "text-black" : "text-gray-400"
+                values.editable ? "text-black" : "text-gray-400"
               } focus:text-black focus:ring-blue-300 focus:ring-2`}
-              id="tel"
+              id="phone"
               type="tel"
               pattern="[0-9]*"
               onChange={handleChange}
-              name="tel"
+              name="phone"
               placeholder="0800000000"
+              value={values.phone}
               required
               autoComplete="none"
-              disabled={value.editable === false}
+              disabled={values.editable === false}
             />
           </div>
           <label
@@ -197,15 +188,16 @@ function Prosile_st() {
           </label>
           <textarea
             className={`resize-none bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal w-full ${
-              value.editable ? "text-black" : "text-gray-400"
+              values.editable ? "text-black" : "text-gray-400"
             } focus:text-black focus:ring-blue-300 focus:ring-2`}
             id="address"
             onChange={handleChange}
             name="address"
             rows="3"
             placeholder="รายละเอียดที่อยู่"
+            value={values.address}
             autoComplete="none"
-            disabled={value.editable === false}
+            disabled={values.editable === false}
           ></textarea>
         </div>
         <div className="py-0.5 mx-5 bg-gray-300  "></div>
@@ -220,14 +212,15 @@ function Prosile_st() {
             มหาลัย *
           </label>
           <select
-            name="univercity"
+            name="college"
             onChange={handleChange}
             id="univercity"
             required
             autoComplete="none"
-            disabled={value.editable === false}
+            value={values.college}
+            disabled={values.editable === false}
             className={`bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block leading-normal w-full ${
-              value.editable ? "text-black" : "text-gray-400"
+              values.editable ? "text-black" : "text-gray-400"
             } focus:text-black focus:ring-blue-300 focus:ring-2`}
             aria-label="Default select example"
           >
@@ -251,9 +244,10 @@ function Prosile_st() {
               id="faculty"
               required
               autoComplete="none"
-              disabled={value.editable === false}
+              value={values.faculty}
+              disabled={values.editable === false}
               className={`bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal w-96 ${
-                value.editable ? "text-black" : "text-gray-400"
+                values.editable ? "text-black" : "text-gray-400"
               } focus:text-black focus:ring-blue-300 focus:ring-2`}
               aria-label="Default select example"
             >
@@ -263,14 +257,15 @@ function Prosile_st() {
               <option value="3">Three</option>
             </select>
             <select
-              name="branch"
+              name="program"
               onChange={handleChange}
-              id="branch"
+              id="program"
               required
               autoComplete="none"
-              disabled={value.editable === false}
+              value={values.program}
+              disabled={values.editable === false}
               className={`bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block appearance-none leading-normal w-96 ${
-                value.editable ? "text-black" : "text-gray-400"
+                values.editable ? "text-black" : "text-gray-400"
               } focus:text-black focus:ring-blue-300 focus:ring-2`}
               aria-label="Default select example"
             >
@@ -296,7 +291,8 @@ function Prosile_st() {
               accept="application/pdf"
               required
               autoComplete="none"
-              disabled={value.editable === false}
+              // value={values.File}
+              disabled={values.editable === false}
             ></input>
           </div>
           <div className="flex space-x-12 justify-center mt-4 ">
@@ -328,4 +324,4 @@ function Prosile_st() {
   );
 }
 
-export default Prosile_st;
+export default ProfileStudent;

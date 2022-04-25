@@ -6,7 +6,7 @@ import Login from "./page/Login";
 import Forgotpass from "./page/Forgotpass";
 import Signupstudent from "./page/Signup-student";
 import Signupcompany from "./page/Signup-company";
-import Test from "./page/test";
+
 
 import Layout from "./page/Layout";
 
@@ -16,12 +16,14 @@ import { useDispatch } from "react-redux";
 import HomeUser from "./page/user/home";
 import ProfileStudent from "./page/Profile-student";
 import Historystudent from "./page/History-student";
+
 // page company
 import HomeCompany from "./page/company/home"
 import ProfileCompany from "./page/Profile-company";
-import Postjob from "./page/Postjob";
+import EditPost from "./page/Postjob/edit-post";
+import CreatePost from "./page/Postjob/create-post";
 import Applicantcompany from "./page/Applicant-company";
-
+import Paymentcompany from "./page/Payment-company/payment";
 
 import CompanyPost from "./page/WaitPost";
 // functions
@@ -65,21 +67,23 @@ function App() {
 
         <Route element={<Layout></Layout>}>
           <Route path="/profileCompany" element={<ProfileCompany />} />
-          <Route path="/profileStudent/:id" element={<ProfileStudent />} />
+          <Route path="/profileStudent" element={<ProfileStudent />} />
           {/*           <Route path="/" element={<Test />} />
            */}{" "}
         </Route>
 
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/forgotpass" element={<Forgotpass />} />
         <Route path="/signupstudent" element={<Signupstudent />} />
         <Route path="/signupcompany" element={<Signupcompany />} />
         <Route path="/Homeuser" element={<HomeUser />} />
-       
+        <Route path="/profileStudent" element={<ProfileStudent />} />
+        
         <Route path="/HomeCompany" element={<HomeCompany />} />
-        <Route path="/postjob/:id" element={<Postjob />} />
-
+        <Route path="/postjob/:id" element={<EditPost />} />
+        <Route path="/postjob" element={<CreatePost />} />
         <Route path="/applicantcompany" element={<Applicantcompany/>} />
+        <Route path="/paymentcompany" element={<Paymentcompany />} />
 
         <Route
           path="/companypost"
