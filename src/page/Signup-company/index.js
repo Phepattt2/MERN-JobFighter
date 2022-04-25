@@ -1,12 +1,17 @@
-import React from "react";
+import React,{useState} from "react";
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
 import Paper from "@mui/material/Paper";
-import { CenterFocusStrong, Rectangle } from "@mui/icons-material";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { CenterFocusStrong, Rectangle } from "@mui/icons-material";
+import {
+    BrowserRouter,
+    Routes,
+    Route,
+    Link,
+  } from "react-router-dom";
 import { Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import PersonIcon from "@mui/icons-material/Person";
@@ -15,15 +20,14 @@ import logo from "../../assets/pics/—Pngtree—cartoon office top view downloa
 import "./Signup-company.css";
 import Typography from "@material-ui/core/Typography";
 import { ThemeProvider, createTheme } from "@material-ui/core/styles";
+import { toast } from "react-toastify";
 
-const handleSubmit = (event) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
-  console.log({
-    email: data.get("email"),
-    password: data.get("password"),
-  });
-};
+import { useNavigate } from "react-router-dom";
+
+import { signup } from "../../api/auth";
+
+
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -67,8 +71,42 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Signupuser() {
-  const classes = useStyles();
+export default function SignupCompany() {
+  const classes = useStyles()
+
+  const [form, setForm] = useState({
+    email: "",
+    cfemail: "",
+    password: "",
+    cfpassword: "",
+    role: "company"
+  });
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    // ใช้ setform เซ็ตข้อมูล โดย ...form  => ดึงตัวแปรข้อมูลทั้งหมดมา
+    // [e.target.name]: e.target.value => set ค่า value ตาม name
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (form.password !== form.cfpassword) {
+      toast.error("password not match");
+    } else {
+      signup(form)
+        .then((res) => {
+          console.log(res);
+          toast("Register Success!");
+          navigate("/")
+        })
+        .catch((err) => {
+          console.log(err);
+          // toast.error(err.response.data)
+        });
+    }
+  };
 
   return (
     // ลองใช้ mui
@@ -110,6 +148,7 @@ export default function Signupuser() {
               noValidate
               sx={{ mt: 2, width: 450 }}
             >
+               <form className="container" onSubmit={handleSubmit}>
               <TextField
                 className="e-mail"
                 margin="normal"
@@ -121,7 +160,9 @@ export default function Signupuser() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                required
                 variant="outlined"
+                onChange={handleChange}
               />
               <TextField
                 className="cfe-mail"
@@ -134,7 +175,9 @@ export default function Signupuser() {
                 name="cfemail"
                 autoComplete="email"
                 sx={{ mt: 2 }}
+                required
                 variant="outlined"
+                onChange={handleChange}
               />
               <TextField
                 className="password"
@@ -146,9 +189,11 @@ export default function Signupuser() {
                 label="Password"
                 type="password"
                 id="password"
+                required
                 autoComplete="current-password"
                 sx={{ mt: 2 }}
                 variant="outlined"
+                onChange={handleChange}
               />
               <TextField
                 className="cfpassword"
@@ -160,9 +205,11 @@ export default function Signupuser() {
                 label="Confirm Password"
                 type="password"
                 id="cfpassword"
+                required
                 autoComplete="current-password"
                 sx={{ mt: 2 }}
                 variant="outlined"
+                onChange={handleChange}
               />
 
               <Button
@@ -181,6 +228,7 @@ export default function Signupuser() {
               >
                 <Typography variant="subtitle1">สมัครสมาชิก</Typography>
               </Button>
+              </form>
             </Box>
           </Grid>
         </Box>

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import Box from "@mui/material/Box";
 import { Grid } from "@mui/material";
 import { makeStyles } from "@material-ui/styles";
@@ -16,14 +16,13 @@ import "./Signup-student.css";
 import Typography from "@material-ui/core/Typography";
 import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 
-const handleSubmit = (event) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
-  console.log({
-    email: data.get("email"),
-    password: data.get("password"),
-  });
-};
+import { toast } from "react-toastify";
+
+import { useNavigate } from "react-router-dom";
+
+import { signup } from "../../api/auth";
+
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -68,8 +67,41 @@ const useStyles = makeStyles({
 });
 
 export default function Signupuser() {
-  const classes = useStyles();
+  const classes = useStyles()
 
+  const [form, setForm] = useState({
+    email: "",
+    cfemail: "",
+    password: "",
+    cfpassword: "",
+    role: "student"
+  });
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    // ใช้ setform เซ็ตข้อมูล โดย ...form  => ดึงตัวแปรข้อมูลทั้งหมดมา
+    // [e.target.name]: e.target.value => set ค่า value ตาม name
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (form.password !== form.cfpassword) {
+      toast.error("password not match");
+    } else {
+      signup(form)
+        .then((res) => {
+          console.log(res);
+          toast("Register Success!");
+          navigate("/")
+        })
+        .catch((err) => {
+          console.log(err);
+          // toast.error(err.response.data)
+        });
+    }
+  }
   return (
     // ลองใช้ mui
     <ThemeProvider theme={theme}>
@@ -110,6 +142,7 @@ export default function Signupuser() {
               noValidate
               sx={{ mt: 2, width: 450 }}
             >
+              <form className="container" onSubmit={handleSubmit}>
               <TextField
                 className="e-mail"
                 margin="normal"
@@ -122,6 +155,8 @@ export default function Signupuser() {
                 autoComplete="email"
                 autoFocus
                 variant="outlined"
+                required
+                onChange={handleChange}
               />
               <TextField
                 className="cfe-mail"
@@ -135,6 +170,8 @@ export default function Signupuser() {
                 autoComplete="email"
                 sx={{ mt: 2 }}
                 variant="outlined"
+                required
+                onChange={handleChange}
               />
               <TextField
                 className="password"
@@ -149,6 +186,8 @@ export default function Signupuser() {
                 autoComplete="current-password"
                 sx={{ mt: 2 }}
                 variant="outlined"
+                required
+                onChange={handleChange}
               />
               <TextField
                 className="cfpassword"
@@ -163,6 +202,8 @@ export default function Signupuser() {
                 autoComplete="current-password"
                 sx={{ mt: 2 }}
                 variant="outlined"
+                required
+                onChange={handleChange}
               />
 
               <Button
@@ -181,6 +222,7 @@ export default function Signupuser() {
               >
                 <Typography variant="subtitle1">สมัครสมาชิก</Typography>
               </Button>
+              </form>
             </Box>
           </Grid>
         </Box>
@@ -253,4 +295,4 @@ export default function Signupuser() {
       </Grid>
     </ThemeProvider>
   );
-}
+                }
