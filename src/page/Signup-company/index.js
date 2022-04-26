@@ -142,6 +142,7 @@ export default function SignupCompany() {
             alignItems="center"
             justifyContent="center"
           >
+            
             <Box
               id="form-write"
               onSubmit={handleSubmit}
