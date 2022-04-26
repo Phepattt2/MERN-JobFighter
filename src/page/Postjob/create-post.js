@@ -353,9 +353,6 @@ export default function Postjob(){
   
   const handleCheck = (e) => {
     var checkBox = document.getElementById("myCheck")
-    // setValue({
-    //   editable: false,
-    // });
     if (checkBox.checked === true){
         console.log('checked')
         setPost({
@@ -372,11 +369,23 @@ export default function Postjob(){
     console.log(postdata.boost)
 
   const handleChange = (e) => {
+    const d =  Date.now()
       console.log(e.target.name ,e.target.value )
-      setPost({
-        ...postdata,
-        [e.target.name]:e.target.value
-      })
+      if(e.target.name === 'postDateExpire' ){
+        let addtime = e.target.value*3600000
+        let settime = addtime+d
+        const exp = new Date(settime)
+        setPost({
+          ...postdata,
+          [e.target.name]:exp
+        })
+     
+      }else{
+        setPost({
+          ...postdata,
+          [e.target.name]:e.target.value
+        })
+      }
     }
   
   const handleSubmit = (e) => {
@@ -722,10 +731,10 @@ export default function Postjob(){
                 <select name="postDateExpire" required className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" 
                 onChange={handleChange}>
                 <option value="">ระบุระยะเวลาการโพสต์</option>
-                <option value= '1' >1 สัปดาห์</option>
-                <option value= '2' >2 สัปดาห์</option>
-                <option value= '3' >3 สัปดาห์</option>
-                <option value= '4' >4 สัปดาห์</option>
+                <option value = '1'>1hr</option>
+                <option value = '2'>2 hrs</option>
+                <option value = '3'>3 hrs</option>
+                <option value = '4'>4 hs</option>
                 </select>
                 </div>
                 

@@ -110,7 +110,7 @@ export default function Example() {
                       <Menu.Item>
                         {({ active }) => (
                           <Link to
-                            ={"/"} /* ใส่ path ไปหน้า Profile */
+                            ={"/profileCompany"} /* ใส่ path ไปหน้า Profile */
                             className={classNames(
                               active ? "bg-teal-400 no-underline" : "",
                               "no-underline block px-4 py-2 text-sm text-black"

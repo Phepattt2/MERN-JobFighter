@@ -7,7 +7,9 @@ import Company3 from "../../assets/pics/Company3.png";
 import Card from "../../page/Home-student/Card.js"; //เหมือนกับcard ของ student
 import { Link } from "react-router-dom";
 
-function index() {
+function Homecompany() {
+    
+
   return (
     <div className="w-full">
       {/* อันที่ 1 home */}
@@ -83,4 +85,4 @@ function index() {
   );
 }
 
-export default index;
+export default Homecompany;

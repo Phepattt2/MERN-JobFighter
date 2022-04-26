@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Profile from "../../assets/pics/profile-company.png";
 import Filebase64 from 'react-file-base64'
 import { useSelector } from "react-redux";
-
+import MyFileBase64 from "../../components/file-base64";
 import { currentUser, updateUser } from "../../api/auth";
 
 const API_PROVINCE = 'https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province.json'
@@ -149,8 +149,8 @@ function ProfileCompany() {
             // รูปภาพ
           />
         </div>
-        <div className="flex justify-center w-64 mx-80">
-        <Filebase64
+        <div className="flex justify-center w-64 mx-72" >
+        <MyFileBase64
                             mutiple = {false} 
                             onDone = {({base64})=>setValues ({...values,
                             img:base64})} 

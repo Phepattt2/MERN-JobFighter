@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 /* ใส่ path ตรงนี้ + ข้างล่างตรง Profile บรรทัดที่ 108 */
 const navigation = [
   
-  { name: 'หน้าหลัก', link: '/homestudent'  , current: false },
+  { name: 'logo', link: '/homestudent'  , current: false },
   { name: 'ค้นหางาน', link: '/search'  , current: false },
   { name: 'ประวัติสมัครงาน', link: '/historystudent', current: false },
   { name: 'ติดต่อสอบถาม', link: '/contactstudent', current: false },
@@ -74,26 +74,8 @@ const navigate = useNavigate();
                   /> 
                 </div>
                 
-                {/* เเก้สีตัวอักษร navbar */}
-                <div className="no-underline hidden sm:block sm:ml-6 ">
-                  <div className="flex space-x-6 items-center ">
-                    {navigation.map((item) => (
-                      <Link to = {item.link} className='no-underline'>
-                      <a
-                        key={item.name}
-                        link={item.link}
-                        className={classNames(
-                          item.current ? 'no-underline bg-teal-400 text-white' : 'no-underline text-black hover:bg-teal-400 hover:text-white', 'text-decoration: none',
-                          'px-3 py-2 rounded-md text-sm font-medium'
-                        )}
-                        aria-current={item.current ? 'page' : undefined}
-                      >
-                        {item.name}
-                      </a>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
+
+           
               </div>
 
               <div className="no-underline absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -120,18 +102,6 @@ const navigate = useNavigate();
                   >
                     <Menu.Items className="no-underline origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none , text-decoration: none" >
                       
-                    {/* Profile */}
-                      <Menu.Item>
-                        {({ active }) => (
-                          <Link to
-                            ={"/profileStudent"} /* ใส่ path ไปหน้า Profile */
-                            className={classNames(active ? 'no-underline bg-teal-400' : '', 'no-underline block px-4 py-2 text-sm text-black')}
-                          >
-                            Profile
-                          </Link>
-                        )}
-                      </Menu.Item>
-                      
                       {/* Signout */}
                       <Menu.Item>
                         {({ active }) => (
@@ -150,26 +120,7 @@ const navigate = useNavigate();
             </div>
           </div>
 
-          <Disclosure.Panel className="sm:hidden no-underline">
-            <div className="px-2 pt-2 pb-3 space-y-1 no-underline">
-              {navigation.map((item) => (
-                <Link to = {item.link} className='no-underline'>
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  link={item.link}
-                  className={classNames(
-                    item.current ? 'no-underline bg-teal-400 text-white' : 'no-underline text-gray-300 hover:bg-teal-400 hover:text-white',
-                    'block px-3 py-2 rounded-md text-base font-medium no-underline'
-                  )}
-                  aria-current={item.current ? 'page' : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-                </Link>
-              ))}
-            </div>
-          </Disclosure.Panel>
+         
         </>
       )}
     </Disclosure>

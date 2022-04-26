@@ -51,7 +51,7 @@ const CompanyPost = () => {
   };
 
     return (
-      <div className="mx-80 my-20 bg-gray-200 shadow  rounded-lg font-sans">
+      <div className="mx-64 my-20 bg-gray-200 shadow  rounded-lg font-sans h-full">
         <div className=" h-20 w-200  bg-green-300  shadow  rounded-lg">
           <div className="p-4 text-center font-bold  text-gray-700 text-3xl ">
             ตารางรอการโพสต์
@@ -76,7 +76,7 @@ const CompanyPost = () => {
                 <th scope="col" className="px-6 py-3">
                   อันตราที่รับ
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-10 py-3">
                   วันที่โพสต์
                 </th>
 

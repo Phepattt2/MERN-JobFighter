@@ -42,7 +42,7 @@ const ManageAdmin = () => {
   const handlechangeEnable = (e, id) => {
     const value = {
       id: id,
-      enabled: e,
+      enable: e,
     };
   
     changeEnable(user.token, value)
@@ -83,10 +83,12 @@ const ManageAdmin = () => {
     }
   };
   return (
+    
     <div className="container-fluid">
+      <MenubarAdmin />
       <div className="row">
         <div className="col-md-2">
-          <MenubarAdmin />
+          
         </div>
 
         <div className="col">
@@ -119,7 +121,7 @@ const ManageAdmin = () => {
 
                   <td>
                     <Switch 
-                      checked={item.enabled}
+                      checked={item.enable}
                       onChange={(e) => handlechangeEnable(e, item._id)}
                       
                     />

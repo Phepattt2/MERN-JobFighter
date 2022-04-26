@@ -19,8 +19,8 @@ export const getmyPosts = async (authtoken) => {
   });
 };
 
-export const changeStatus = async (authtoken, value) => {
-  return await axios.post("http://localhost:5000/posts/change-status", value, {
+export const changeEnable = async (authtoken, value) => {
+  return await axios.post("http://localhost:5000/posts/change-enable", value, {
     headers: {
       Authorization: `Bearer ${authtoken}`,
     },

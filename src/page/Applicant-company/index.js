@@ -102,7 +102,7 @@ const ApplicantCompany = () => {
 
 
   return (
-    <div className="flex flex-col items-center mx-20 my-20 bg-[#F2EFEF] rounded-lg font-sans  sm:min-w-[400px] min-w-[300px] ">
+    <div className="flex flex-col items-center mx-20 my-20 bg-[#F2EFEF] rounded-lg font-sans  sm:min-w-[400px] min-w-[300px] h-full ">
       <div className=" h-20 w-full bg-[#69F0AE] rounded-lg">
         <div className=" p-4 font-bold text-black text-2xl text-center">
           ใบสมัครของผู้สมัครงาน
@@ -115,7 +115,7 @@ const ApplicantCompany = () => {
 
       {/* card show รายเละเอียดการสมัครเเต่ละบล็อกๆ */}
         {values.job.map((item,index) => ( 
-      <div className="flex flex-row items-center w-3/4 h-full rounded-xl  drop-shadow-xl p-2 my-3 font-sans w-[1180px] sm:min-w-[400px] min-w-[300px] ">
+      <div className="flex flex-row items-center w-3/4 h-full rounded-xl show : w-[1180px] drop-shadow-xl p-2 my-3 font-sans w-[1180px] sm:min-w-[400px] min-w-[300px] ">
         <div className="flex w-full h-55 rounded-xl bg-white mb-4">
           {/* รายละเอียดของผู้สมัครงาน */}
           <div className="flex pl-12 py-3">

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Profile from "../../assets/pics/profile-student.png";
-import Filebase64 from 'react-file-base64'
+
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { currentUser, updateUser } from "../../api/auth"
+import MyFileBase64 from "../../components/file-base64";
 
 const API_PROVINCE = 'https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province.json'
 const API_COLLEGE = 'https://raw.githubusercontent.com/MicroBenz/thai-university-database/master/dist/universities-pretty.json'
@@ -212,8 +213,8 @@ function ProfileStudent() {
             // รูปภาพ
           />
         </div>
-        <div className="flex justify-center w-64 mx-80">
-        <Filebase64
+        <div className="flex justify-center w-64 mx-72">
+        <MyFileBase64
                             mutiple = {false} 
                             onDone = {({base64})=>setValues ({...values,
                             img:base64})} 
@@ -386,7 +387,7 @@ function ProfileStudent() {
             ใบทรานสคริปต์ *
           </label>
           <div className="flex justify-left w-72">
-          <Filebase64 
+          <MyFileBase64 
                             mutiple = {false} 
                             onDone = {({base64})=>setValues ({...values,
                             transcript:base64})} />

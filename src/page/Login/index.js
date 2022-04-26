@@ -74,8 +74,9 @@ export default function Login(){
     signIn(form).then((res) => {
 
         console.log(res.data);
-        toast(res.data.payload.user.name + " Login Success");   // แจ้งเตือน alert
+           // แจ้งเตือน alert
         roleBaseRedirect(res.data.payload.user.role);         // เช็คถ้าเป็น role ไหนให้ไปหน้านั้น โดยใช้ข้อมูลจาก res
+        toast(res.data.payload.user.name + " Login Success");
         // redux
         dispatch({
           type: "LOGIN",
@@ -90,7 +91,7 @@ export default function Login(){
         });
         
       localStorage.setItem("token", res.data.token);     // ***เก็บ token โดยใช้ข้อมูลจาก res
-      
+      localStorage.setItem("role", res.data.payload.user.role);
 
     })
     .catch((err) => {
