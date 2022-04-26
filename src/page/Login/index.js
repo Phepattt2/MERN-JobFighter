@@ -156,6 +156,7 @@ export default function Login(){
               name="email"
               autoComplete="email"
               autoFocus
+              required
               variant="outlined"
               onChange={handleChange}
             />
@@ -171,6 +172,7 @@ export default function Login(){
               autoComplete="current-password"
               sx={{ mt: 5}}
               variant="outlined"
+              required
               onChange={handleChange}
             />
 

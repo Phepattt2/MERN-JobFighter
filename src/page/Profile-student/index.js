@@ -207,6 +207,7 @@ function ProfileStudent() {
           <img
             className="h-36 w-36"
             img
+            required
             src={values.img === "" ? Profile : values.img}
             alt="profile"
 
@@ -386,7 +387,8 @@ function ProfileStudent() {
           >
             ใบทรานสคริปต์ *
           </label>
-          <div className="flex justify-left w-72">
+            
+          <div className="flex justify-left w-72" required>
           <MyFileBase64 
                             mutiple = {false} 
                             onDone = {({base64})=>setValues ({...values,

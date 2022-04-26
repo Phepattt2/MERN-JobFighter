@@ -4,13 +4,17 @@ import Footer from "../../../components/footer/Footer";
 function Layout() {
   
   return (
-    <div className="h-screen">
-      <Navbarcompany/>
-      
-      <Outlet />
-      
-      <Footer />
-    </div>
+    <body class="flex flex-col min-h-screen ">
+            <header>
+                <Navbarcompany/>
+            </header>
+            <main class="flex-grow">
+                <Outlet />
+            </main>
+            <footer>
+                <Footer />
+            </footer>
+        </body>
   );
 }
 

@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const getJob = async (authtoken) => {
-    return await axios.get("http://localhost:5000/submitjob/", {
-     
+    return await axios.get("http://localhost:5000/submitjob/", 
+    {
       headers: {
         Authorization: `Bearer ${authtoken}`,
       },

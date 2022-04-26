@@ -8,26 +8,30 @@ const HistoryStudent = () => {
   const { user } = useSelector((state) => ({ ...state }));
 
   const [values, setValues] = useState({
-   post: [],
+   job: [],
   });
 
+
+
   useEffect(() => {
-    //code
     loadData(user.token);
   }, []);
 
   const loadData = (authtoken) => {
-    //code
+
     
-    getJob(authtoken) // ดึงข้อมูล Post ทั้งหมดมา 
+    getJob(authtoken) // ดึงข้อมูล jobapp ทั้งหมดมา 
       .then(  (res) => {  
-        //code
-        setValues({...values,post: res.data}); //  set ตัวแปร post ให้เท่ากับ ข้อมูล Post ทั้งหมดที่โหลดมา
-        console.log(values.post)
+       
+        setValues({...values, 
+          job: res.data}); 
+   
+
+        console.log(res.data)
       })
       .catch((err) => {
         //err
-        console.log("Error loadData", err.response.data);
+        console.log("Error loadData", err);
       });
   };
 
@@ -66,7 +70,7 @@ const HistoryStudent = () => {
   };
   
   return (
-    <div className="flex flex-col items-center mx-72 my-20 bg-[#F2EFEF] rounded-lg font-sans sm:min-w-[400px] min-w-[300px] h-full">
+    <div className="flex flex-col items-center mx-72 my-20 bg-[#F2EFEF] rounded-lg font-sans sm:min-w-[400px] min-w-[300px] ">
       <div className=" h-20 w-full bg-[#69F0AE] rounded-lg">
         <div className=" p-4 font-bold text-black text-2xl text-center">
           ประวัติสมัครงาน
@@ -79,7 +83,7 @@ const HistoryStudent = () => {
 
       <div className="flex flex-col items-center w-3/4 h-full rounded-xl drop-shadow-xl p-2 my-3 font-sans sm:min-w-[400px] min-w-[300px]">
         {/* card show รายเละเอียดการสมัครเเต่ละบล็อกๆ */}
-          {values.post.map((item,index) => ( 
+          {values.job.map((item,index) => ( 
         <div className="w-full h-55 rounded-xl bg-white mb-4">
           <div className="grid grid-row-3">
            
@@ -95,7 +99,7 @@ const HistoryStudent = () => {
                 <div class="flex col-span-3">
                   {/* ตำเเหน่งงานหรือชื่อบริษัท */}
                   <div className=" py-1.5  focus:outline-none text-black">
-                    { item.post.position}
+                    { item.post.position} 
                   </div>
                 </div>
                 <div class="flex row-span-2 col-span-3">
@@ -108,7 +112,7 @@ const HistoryStudent = () => {
                   />
                   {/* ที่อยู่ address บริษัท */}
                   <div className="px-0.5 py-1.5  focus:outline-none ml-2 text-black text-sm">
-                    {item.post.companyAddress}
+                    {item.company.companyAddress}
                   </div>
                 </div>
 
@@ -133,9 +137,8 @@ const HistoryStudent = () => {
               </div>
             </div>
           </div>
-            
         </div>
-        ))}
+        ))} 
       </div>
       
     </div>

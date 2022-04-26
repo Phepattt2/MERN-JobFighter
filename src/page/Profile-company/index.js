@@ -142,6 +142,7 @@ function ProfileCompany() {
         <div className="flex justify-center">
           <img
             className="h-36 w-36"
+            required
             img
             src={values.img === "" ? Profile : values.img}
             alt="profile"

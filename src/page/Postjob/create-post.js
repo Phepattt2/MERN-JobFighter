@@ -661,7 +661,7 @@ export default function Postjob(){
                         ประเภทงาน
                 </Typography>
                 <select name="jobType" required   className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" onChange={handleChange}>
-                <option>ระบุประเภทงาน</option>
+                <option value=''>ระบุประเภทงาน</option>
                 {jobTypeList.map((e, idx) => (
                     <option value={e}>{e}</option>
                   ))}

@@ -135,12 +135,12 @@ const navigate = useNavigate();
                       {/* Signout */}
                       <Menu.Item>
                         {({ active }) => (
-                          <h3
+                         <div
                             onClick={logout}
                             className={classNames(active ? 'no-underline bg-teal-400' : '', 'no-underline block px-4 py-2 text-sm text-black')}
                           >
                             Sign out
-                          </h3>
+                            </div>
                         )}
                       </Menu.Item>
                     </Menu.Items>

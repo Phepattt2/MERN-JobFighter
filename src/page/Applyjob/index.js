@@ -10,58 +10,74 @@ import { useSelector } from "react-redux";
 
 
 export default function Applyjob(req,res){
-  const { user } = useSelector((state) => ({ ...state }));
+
+  var { user } = useSelector((state) => ({ ...state }));
   const [userData,SetuserData] = useState([])
   const [PostData,SetPostData] = useState([])
-  const [final,Setfinal] = useState([])
   const [final2,Setfinal2] = useState([])
+  const [final,Setfinal] = useState([])
   const [sendData,SetSendData] = useState({
-      'postid':'',
-      'companyid':'',
-      'resume':'',
-      'userid':''
+      'postid':''
+      ,'companyid':''
+      ,'resume':''
+      // ,'userid':''
     })
-  const [click, setClick] = useState({
+  
+    const [click, setClick] = useState({
       ClickYes : false,
       canClick : true
     })
 
-  async function fetchPostData(value){  
-    const response = await axios.get(process.env.REACT_APP_API+`/search/${value}`).then(
-      (res)=>{
-        console.log(res)
-        SetPostData(res.data)
-       SetuserData(res.data.user)
-      }
-    )
-  }
 
-  async function fetchButtonState(value){  
-    const response = await axios.get(process.env.REACT_APP_API+`/submitjob/focheck/${value}`,{headers:{'authorization':`Bearer ${user.token}`}} ).then(
-      (res)=>{
-        if(res.data === null){
-        Setfinal('notFound')
-        }
-        else{
-        Setfinal('Found')
-        }
-      }
-    )
-  }
+  const params = new Proxy(new URLSearchParams(window.location.search), {
+    get: (searchParams, prop) => searchParams.get(prop),
+  });
 
+  let value = params.id;
+  let JsonData ;
+  let JsonData2 ; 
+  
+  
+
+ 
+  
+
+  useEffect(()=> {
+    fetchFirstJsonData(value)    
+  },[])
+  
   async function handleClick (e)  {
-    Setfinal2('clicked')
-    const params = new Proxy(new URLSearchParams(window.location.search), {
-      get: (searchParams, prop) => searchParams.get(prop),
-    });
-    let value = params.id;
-
     setClick({
       canClick: false,
       ClickYes : true,
-    })
+    });
 
+    console.log('this is img 64data : ',sendData.resume)
+    Setfinal2("clicked")
+    const response = await  axios.post(process.env.REACT_APP_API+'/submitjob/', sendData ,{headers:{'authorization':`Bearer ${user.token}`}} )
   }
+
+  async function fetchFirstJsonData(value){  
+    const response = await  axios.get(process.env.REACT_APP_API+`/search/${value}`)
+    const response2 = axios.get(process.env.REACT_APP_API+`/submitjob/focheck/${value}`,{headers:{'authorization':`Bearer ${user.token}`}} )
+    JsonData2 = await response2
+    JsonData = await response.data
+      if (JsonData2.data === null) { 
+      Setfinal('Not Found')
+      }
+      else{
+        Setfinal('Found')
+      }
+    SetPostData(JsonData)
+    SetuserData(JsonData.user)
+    SetSendData({
+        ...sendData,
+        postid:value,
+        companyid:response.data.user._id,
+        userid:user._id
+      })
+      
+    }
 
   const notosan1=createTheme({
     typography:{
@@ -98,26 +114,6 @@ export default function Applyjob(req,res){
       }
     },
   });
-
-  useEffect(()=> {
-    const params = new Proxy(new URLSearchParams(window.location.search), {
-      get: (searchParams, prop) => searchParams.get(prop),
-    });
-    let value = params.id;
-    fetchPostData(value)
-    fetchButtonState(value)
-    console.log('pp',PostData)
-    console.log('ff',final)
-  
-  },[])
-
-
-  console.log('user token :',user.id)
-  console.log('PostData :',PostData)
-  console.log('final :',final)
-  console.log('sendata :',sendData)
-  console.log('userData is : ',userData.name)
-  console.log('------------------------------------------------')
   
 return(
   <ThemeProvider theme={notosan1}>
@@ -342,7 +338,6 @@ return(
       <div className="h-10 w-200 bg-gray-200   rounded-lg "></div>
   </div>
   </ThemeProvider>
-);
+);        
+            }
 
-
-}
