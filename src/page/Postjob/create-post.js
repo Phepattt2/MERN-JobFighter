@@ -469,7 +469,7 @@ export default function Postjob(){
                 <Typography variant="body2">
                         ระยะเวลาการโพสต์
                 </Typography>
-                <select name="postDateExpire"
+                <select name="postExpireIn"
                 required 
                 disabled={disButton===true} 
                 className="text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-[250px] p-2.5" 
