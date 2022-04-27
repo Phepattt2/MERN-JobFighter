@@ -61,7 +61,7 @@ export default function Example() {
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-6">
                     {navigation.map((item) => (
-                      <Link to = {item.link} className='no-underline'>
+                      <Link to = {item.link} className='no-underline font-sans'>
                       <a
                         key={item.name}
                         link={item.link}

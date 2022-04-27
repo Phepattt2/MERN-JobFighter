@@ -33,8 +33,8 @@ import Aboutus from "./page/About-us";
 // functions
 import { currentUser } from "./api/auth";
 // Routes
-import StudentRoute from "./components/routes/StudentRoute";
-import CompanyRoute from "./components/routes/CompanyRoute";
+import StudentRoutes from "./page/Layout/studentRoutes";
+import CompanyRoutes from "./page/Layout/companyRoutes";
 import AdminRoute from "./components/routes/AdminRoute";
 
 import { ToastContainer } from "react-toastify";
@@ -43,11 +43,14 @@ import "react-toastify/dist/ReactToastify.css";
 // page admin
 import ManageAdmin from "./page/admin/ManageAdmin";
 
+//Navbar
+
+import Layout from "./page/Layout/index";
 function App() {
   const dispatch = useDispatch();
   const idtoken = localStorage.token;
   const role = localStorage.role;
-  if (idtoken) {
+  if (idtoken ) {
     dispatch({
       type: "LOGIN",
       payload: {
@@ -58,84 +61,75 @@ function App() {
     currentUser(idtoken)
       .then((res) => {
         console.log(res.data);
-        dispatch({
-          type: "LOGIN",
-          payload: {
-            token: idtoken,
-            username: res.data.name,
-            role: res.data.role,
-          },
-        });
+        // dispatch({
+        //   type: "LOGIN",
+        //   payload: {
+        //     token: idtoken,
+        //     username: res.data.name,
+        //     role: res.data.role,
+        //   },
+        // });
       })
       .catch((err) => {
-        //err
         console.log(err);
       });
   }
   return (
     <div>
       <ToastContainer />
-
+   
       <Routes>
+        
+      <Route element ={<Layout role={role}></Layout> } >
+        <Route path="/search" element={<Search  />} />
+        </Route>
+
         <Route path="/" element={<Login />} />
         <Route path="/forgotpass" element={<Forgotpass />} />
         <Route path="/signupstudent" element={<Signupstudent />} />
         <Route path="/signupcompany" element={<Signupcompany />} />
+        <Route path="/aboutus" element={<Aboutus />} />
 
-        <Route path="/admin/manage" element={<ManageAdmin />} />
 
 
+
+
+        <Route
+          path="/admin/manage"
+          element={
+            // <AdminRoute>
+              <ManageAdmin />
+            // </AdminRoute>
+          }
+        />
 
         <Route element={<Layoutstudent></Layoutstudent>}>
-          <Route path="/profileStudent" element={<ProfileStudent />} />
+          <Route element={<StudentRoutes></StudentRoutes>}>
+            <Route path="/profileStudent" element={<ProfileStudent />} />
+
+            <Route path="/applyjob/" element={<Applyjob />} />
+            <Route path="/historystudent" element={<Historystudent />} />
+            <Route path="/contactstudent" element={<Contactstudent />} />
+          </Route>
           <Route path="/homestudent" element={<Homestudent />} />
-          <Route path="/search" element={<Search />} />
-          <Route
-            path="/applyjob/"
-            element={
-              <StudentRoute>
-                <Applyjob />
-              </StudentRoute>
-            }
-          />
-          <Route
-            path="/historystudent"
-            element={
-              <StudentRoute>
-                <Historystudent />
-              </StudentRoute>
-            }
-          />
-          <Route path="/contactstudent" element={<Contactstudent />} />
-          <Route path="/aboutus" element={<Aboutus />} />
         </Route>
 
         <Route element={<Layoutcompany></Layoutcompany>}>
+          <Route element={<CompanyRoutes></CompanyRoutes>}>
+            <Route path="/profileCompany" element={<ProfileCompany />} />
+
+            <Route path="/applicantcompany" element={<Applicantcompany />} />
+            <Route path="/paymentcompany/" element={<Paymentcompany />} />
+            <Route path="/postjob" element={<CreatePost />} />
+            <Route path="/postjob/:id" element={<EditPost />} />
+
+            <Route path="/contactcompany" element={<Contactcompany />} />
+
+            <Route path="/companypost" element={<CompanyPost />} />
+
+            <Route path="/applicantcompany" element={<Applicantcompany />} />
+          </Route>
           <Route path="/homecompany" element={<Homecompany />} />
-          <Route path="/profileCompany" element={<ProfileCompany />} />
-
-          <Route path="/applicantcompany" element={<Applicantcompany />} />
-          <Route path="/paymentcompany" element={<Paymentcompany />} />
-          <Route path="/postjob" element={<CreatePost />} />
-          <Route path="/postjob/:id" element={<EditPost />} />
-          <Route path="/contactcompany" element={<Contactcompany />} />
-          <Route
-            path="/companypost"
-            element={
-              <CompanyRoute>
-                <CompanyPost />
-              </CompanyRoute>
-            }
-          />
-
-          <Route
-            path="/applicantcompany"
-            element={
-              <CompanyRoute>
-                <Applicantcompany />
-              </CompanyRoute>
-            }
-          />
         </Route>
       </Routes>
     </div>

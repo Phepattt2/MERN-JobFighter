@@ -2,13 +2,13 @@ import React from "react";
 import { useState ,useEffect } from "react";
 import Address from "../../assets/pics/Address.png";
 import Company1 from "../../assets/pics/Company1.png";
-//import axios from "axios";
 import ReactPaginate from "react-paginate";
 import axios from "axios";
 import JsonData from "./MOCK_DATA.json";
 import "./Searchresult.css"; 
 import Salary from "../../assets/pics/Salary.png";
 import { Link } from "react-router-dom";
+import LoadingCard from "../../components/routes/LoadingCard";
 const API_PROVINCE = 'https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province.json'
 const API_COLLEGE = 'https://raw.githubusercontent.com/MicroBenz/thai-university-database/master/dist/universities-pretty.json'
 
@@ -164,14 +164,21 @@ function Send_data() {
   const [colleges,setCollege] = useState([])
   const [provinces,setProvice] = useState([]) 
  
+  const [loading, setLoading] = useState([false])
+
   var temp1 = [] 
   var temp2 = [] 
 
   async function fetchFirstJsonData(){  
-
+    setLoading(true);
     const response = await  axios.post(process.env.REACT_APP_API+'/search')
-    JsonData = response.data
+    
+    .then((res) => {
+    JsonData = res.data
+           //////// **********
+    
 
+    })
     console.log('fetch first')
     const boosted = await axios.post(process.env.REACT_APP_API+'/search',{'boost':true , 'enable': true})
     temp1 = boosted.data
@@ -183,6 +190,7 @@ function Send_data() {
     for(var m = 0 ; m < temp1.length ;  m++){
       temp2.push(temp1[m])
     }
+    setLoading(false) 
     setUsers(temp2)
     console.log('sorted res is :',temp2)
     console.log('temp[0] is user :',temp2[0].user.name)
@@ -313,17 +321,19 @@ function Send_data() {
 
             
                 {/* logo company */}
-                <div className="row-span-3 ml-20 grid justify-items-center">
-                  <div className="w-20 h-20 rounded-xl bg-[#E2E2E2] ">
-                    <img
-                      src={users.user.img} //ลองใส่รูปไปก่อน รอดึง logo จากหลังบ้าน
-                      alt="logoCompany"
-                      span="location"
-                    />
-                  </div>
+              <div className="row-span-3 grid ml-20 justify-items-center align-items-center">
+                <div className="flex w-20 h-20 rounded-xl items-center bg-[#E2E2E2] ">
+                  <img
+                    src={users.user.img}
+                    alt="logoCompany"
+                    span="location"
+                  />
                 </div>
               </div>
-              <div className="flex flex-row">
+            </div>
+
+            <div className="flex flex-row ">
+              <div className="flex min-w-[50%] ">
                 {/* logo address */}
                 <img
                   src={Address}
@@ -332,27 +342,28 @@ function Send_data() {
                   span="location"
                 />
                 {/* ที่อยู่ address บริษัท */}
-                <div className="px-0.5 py-1.5  focus:outline-none ml-2 text-black text-sm">
+                <div className="px-0.5 py-1.5  focus:outline-none ml-2 text-black text-sm ">
                   {users.provinceAddress}
-                  {/* รอเอาค่าจากหลังบ้านมาใส่ */}
                 </div>
-                
-                  <img
-                    src={Salary}
-                    alt="logoAddress"
-                    className=" h-5 w-5 ml-8"
-                    span="location"
-                  />
-                  <div className="px-0.5 py-1.5  focus:outline-none ml-2 text-black text-sm">
-                  { users.wageMin} - { users.wageMax}
-                
-                    
               </div>
 
+              <div className="flex min-w-[50%] ">
+                {/* เงินเดือน บริษัท */}
+                <img
+                  src={Salary}
+                  alt="logoAddress"
+                  className=" h-5 w-5 ml-8"
+                  span="location"
+                />
+                <div className="px-0.5 py-1.5  focus:outline-none ml-2 text-black text-sm">
+                    { users.wageMin} - { users.wageMax}
+                </div>
               </div>
             </div>
           </div>
+          </div>
         </Link>
+       
       );
     });
 
@@ -468,7 +479,7 @@ function Send_data() {
                     {/* ช่วงเงินเดือน-ข้้นต่ำ */}
                     <input
                       name="wageMin"
-                      className=" w-2/4 h-10 rounded-xl bg-white drop-shadow-md placeholder:text-zinc-400
+                      className=" w-2/4 h-10  rounded-xl bg-white drop-shadow-md placeholder:text-zinc-400
                     focus:outline-none focus:border-[#24AB82] focus:ring-1 focus:ring-[#24AB82]
                     disabled:text-[#FF3358] disabled:border-[#FF3358] disabled:shadow-none
                     invalid:border-[#FF3358] invalid:text-[#FF3358] focus:invalid:border-[#FF3358] focus:invalid:ring-[#FF3358]"
@@ -482,7 +493,7 @@ function Send_data() {
                     {/* ช่วงเงินเดือน-มากสุด*/}
                     <input
                       name="wageMax"
-                      className=" w-2/4 h-10 rounded-xl bg-white drop-shadow-md placeholder:text-zinc-400
+                      className=" w-2/4 h-10  rounded-xl bg-white drop-shadow-md placeholder:text-zinc-400
                     focus:outline-none focus:border-[#24AB82] focus:ring-1 focus:ring-[#24AB82]
                     disabled:text-[#FF3358] disabled:border-[#FF3358] disabled:shadow-none
                     invalid:border-[#FF3358] invalid:text-[#FF3358] focus:invalid:border-[#FF3358] focus:invalid:ring-[#FF3358] "
@@ -509,32 +520,38 @@ function Send_data() {
 
             {/* หน้าผลการค้นหา */}
             <div className="flex flex-col w-3/4  items-center rounded-2xl  bg-[#F7FAF7] drop-shadow-lg">
-              <div className="flex flex-col w-3/4 gap-5 m-5 ">
-                <div className="p-2 font-bold text-black text-2xl border-b-4 border-zinc-400 ">
-                  ผลการค้นหา
-                </div>
-                <div className="flex flex-col w-full h-full ">
-                  {displayUsers}
-                  <div className="flex h-50  mt-5">
-                    {/* ปุ่มเปลี่ยนหน้า */}
-                    <ul className="button-list">
-                      <ReactPaginate
-                        previousLabel={"Previous"}
-                        nextLabel={"Next"}
-                        pageCount={pageCount} /*นับจำนวนหน้า*/
-                        onPageChange={changePage}
-                        containerClassName={"paginationBttns"}
-                        previousLinkClassName={"previousBttn"}
-                        nextLinkClassName={"nextBttn"}
-                        disabledClassName={"paginationDisabled"}
-                        activeClassName={"paginationActive"}
-                      />
-                    </ul>
-                  </div>
-                </div>
-
-                {/* ผลการค้นหา */}
+                <div className="flex flex-col w-3/4 gap-5 m-5 ">
+              <div className="p-2 font-bold text-black text-2xl border-b-4 border-zinc-400 ">
+                ผลการค้นหา
               </div>
+              {loading
+              ? <LoadingCard  count ={3}/>
+              : <div className="flex flex-col w-full h-full ">
+              {displayUsers}
+              <div className="flex h-50  mt-5">
+                {/* ปุ่มเปลี่ยนหน้า */}
+                <ul className="button-list">
+                  <ReactPaginate
+                    previousLabel={"Previous"}
+                    nextLabel={"Next"}
+                    pageCount={pageCount} /*นับจำนวนหน้า*/
+                    onPageChange={changePage}
+                    containerClassName={"paginationBttns"}
+                    previousLinkClassName={"previousBttn"}
+                    nextLinkClassName={"nextBttn"}
+                    disabledClassName={"paginationDisabled"}
+                    activeClassName={"paginationActive"}
+                  />
+                </ul>
+              </div>
+            </div>
+            }
+              
+
+              {/* ผลการค้นหา */}
+            </div>
+         
+             
             </div>
           </div>
         </div>

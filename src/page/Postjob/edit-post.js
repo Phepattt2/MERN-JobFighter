@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import { useNavigate, useParams } from "react-router-dom";
 import "./Postjob.css";
-
+import { Link } from "react-router-dom";
 const API_PROVINCE = 'https://raw.githubusercontent.com/kongvut/thai-province-data/master/api_province.json'
 const API_COLLEGE = 'https://raw.githubusercontent.com/MicroBenz/thai-university-database/master/dist/universities-pretty.json'
 
@@ -78,6 +78,7 @@ export default function EditPost(){
     updatePost(user.token, value, params.id)
       .then((res) => {
         console.log(res.data);
+        
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -497,6 +498,19 @@ export default function EditPost(){
                 >
                   <Typography variant="body1">ตกลง</Typography>
                 </button>
+
+                 {/* { value.slipimg ?  
+                <button
+              class="bg-[#24AB82] drop-shadow-md font-bold text-white text-2xl rounded-xl px-6 py-2.5 mt-5 mb-4 hover:bg-[#1F795E] hover:ring-2 hover:ring-white focus:ring-2 focus:ring-white focus:outline-none " 
+           
+            >
+             <Link to ={`/paymentcompany/?id=${value._id}`} className= "text-white text-decoration-none"  >
+              <Typography variant="body1">
+              หน้าต่อไป
+              </Typography>
+              </Link>
+                  </button> 
+              : <div></div>} */}
               </div>
             </div>
           </div>

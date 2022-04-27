@@ -15,13 +15,13 @@ function index() {
       <div className="home">
         {/* left */}
         <div className="i-left">
-          <div className="i-name">
+          <div className="i-name font-sans">
             <span>พบกับงานที่ใช่ งานที่ชอบ</span>
             <span>Job Fighter</span>
           </div>
           {/* link to Profile */}
           <Link to="/profileStudent">
-            <button className="button i-button">ฝากประวัติ</button>
+            <button className="button i-button font-sans">ฝากประวัติ</button>
           </Link>
         </div>
 
@@ -53,13 +53,13 @@ function index() {
       {/* อันที่ 2 home2 */}
       <div className="home2">
         {/* left */}
-        <div className="awesome">
+        <div className="awesome font-sans">
           <span>เว็บไซต์สำหรับนักศึกษา</span>
           <span>Job Fighter</span>
         </div>
 
         {/* right */}
-        <div className="cards">
+        <div className="cards font-sans">
           <div style={{ top: "15rem", left: "-15rem" }}>
             <Card
               emoji={Student1}

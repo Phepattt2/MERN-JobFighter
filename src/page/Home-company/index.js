@@ -16,13 +16,13 @@ function Homecompany() {
       <div className="home">
         {/* left */}
         <div className="i-left">
-          <div className="i-name">
+          <div className="i-name font-sans">
             <span>เข้าถึงผู้สมัครได้มากกว่าใคร !</span>
             <span>Job Fighter</span>
           </div>
           {/* link to หน้าสร้างโพสต์ */}
           <Link to="/postjob">
-            <button className="button i-button">สร้างโพสต์</button>
+            <button className="button i-button font-sans">สร้างโพสต์</button>
           </Link>
         </div>
         {/* right */}
@@ -47,13 +47,13 @@ function Homecompany() {
       {/* อันที่ 2 home2 */}
       <div className="home2">
         {/* left */}
-        <div className="awesome">
+        <div className="awesome font-sans">
           <span>ลงประกาศงานกับ</span>
           <span>Job Fighter</span>
         </div>
 
         {/* right */}
-        <div className="cards">
+        <div className="cards font-sans">
           <div style={{ top: "15rem", left: "-15rem" }}>
             <Card
               emoji={Company1}

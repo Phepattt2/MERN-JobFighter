@@ -5,7 +5,7 @@ import emailjs from '@emailjs/browser';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./Contact-student.css";
-
+import { useNavigate } from "react-router-dom";
 
 export default function Contact(){ 
 const notosan1=createTheme({
@@ -36,6 +36,8 @@ const notosan1=createTheme({
     },
   });
 
+  const navigate = useNavigate()
+
 const handleSubmit = (e) => {
     e.preventDefault();
       emailjs.sendForm('service_xy8spft', 'template_ig1l1n1',e.target,'cM7rn-MmV7ZI79OUZ')     
@@ -43,7 +45,7 @@ const handleSubmit = (e) => {
         console.log(result.text);
         e.target.reset();
         toast("ส่งแบบฟอร์มสำเร็จ!");
-        <a href="/"/>
+        navigate('/homestudent')
     }, (error) => {
         console.log(error.text);
     });  
@@ -66,8 +68,8 @@ const isEmpty=()=>{
 
   return(
     <ThemeProvider theme={notosan1}>
-        <ToastContainer/>
-        <div className=" h-20 w-200 bg-green-300 rounded-t-lg mx-10 mt-8">
+    
+        <div className=" h-20 w-200 bg-green-300 rounded-t-lg mx-36 mt-8">
         <div div className="flex items-center justify-center pt-2.5">
             <Typography variant="subtitle1">
                 ติดต่อสอบถาม
@@ -76,11 +78,11 @@ const isEmpty=()=>{
         </div>
 
         
-        <div className=" w-200  bg-gray-200  shadow-lg md:drop-shadow-xl rounded-b-lg mx-10 mb-10 mt-0 shadow-black">
-        <div className="flex flex-col space-y-4 ">
-        <form onSubmit={handleSubmit}>
+        <div className=" w-200  bg-gray-200  shadow-lg md:drop-shadow-xl rounded-b-lg mx-36 mb-10 mt-0 shadow-black">
+        <div className="flex flex-col space-y-4 " >
+        <form onSubmit={handleSubmit} >
             {/* ชื่อนามกุล */}
-            <div className="mt-4 ml-7 mr-7">
+            <div className="mt-4 ml-7 mr-7" >
             <Typography variant="body1">
                 ชื่อ-นามสกุล
             </Typography>
@@ -90,7 +92,7 @@ const isEmpty=()=>{
                 className="h-10 w-full text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block mt-2 pl-3"
                 placeholder="กรุณากรอกชื่อจริง นามสกุล..."
                 onKeyUp={isEmpty}
-                
+                required
                 ></input>
                 
             </div>
@@ -106,7 +108,7 @@ const isEmpty=()=>{
                 className="h-10 w-full text-black text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block mt-2 pl-3"
                 placeholder="example@gmail.com"
                 onKeyUp={isEmpty}
-                
+                required
                 ></input>
                 
             </div>
@@ -120,6 +122,7 @@ const isEmpty=()=>{
               placeholder="กรุณากรอกรายละเอียด..."
               id="message"
               onKeyUp={isEmpty}
+              required
               ></textarea>
               
             </div>

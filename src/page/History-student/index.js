@@ -3,10 +3,11 @@ import Address from "../../assets/pics/Address.png";
 import Company1 from "../../assets/pics/Company1.png";
 import { useSelector } from "react-redux";
 import { getJob } from "../../api/job"
+import LoadingCard from "../../components/routes/LoadingCard";
 
 const HistoryStudent = () => {
   const { user } = useSelector((state) => ({ ...state }));
-
+  const [loading, setLoading] = useState([false])
   const [values, setValues] = useState({
    job: [],
   });
@@ -19,14 +20,14 @@ const HistoryStudent = () => {
 
   const loadData = (authtoken) => {
 
-    
+    setLoading(true)
     getJob(authtoken) // ดึงข้อมูล jobapp ทั้งหมดมา 
       .then(  (res) => {  
        
         setValues({...values, 
           job: res.data}); 
    
-
+          setLoading(false)
         console.log(res.data)
       })
       .catch((err) => {
@@ -70,19 +71,27 @@ const HistoryStudent = () => {
   };
   
   return (
+   
+   
+<>
+{loading
+              ? <LoadingCard  count ={5}/>
+              :
+<div>
     <div className="flex flex-col items-center mx-72 my-20 bg-[#F2EFEF] rounded-lg font-sans sm:min-w-[400px] min-w-[300px] ">
       <div className=" h-20 w-full bg-[#69F0AE] rounded-lg">
         <div className=" p-4 font-bold text-black text-2xl text-center">
           ประวัติสมัครงาน
         </div>
       </div>
-
+     
+     
       <div className="flex w-3/4 mt-4 text-black text-xl">
         รายละเอียดการสมัคร
       </div>
-
-      <div className="flex flex-col items-center w-3/4 h-full rounded-xl drop-shadow-xl p-2 my-3 font-sans sm:min-w-[400px] min-w-[300px]">
+       <div className="flex flex-col items-center w-3/4 h-full rounded-xl drop-shadow-xl p-2 my-3 font-sans sm:min-w-[400px] min-w-[300px]">
         {/* card show รายเละเอียดการสมัครเเต่ละบล็อกๆ */}
+        
           {values.job.map((item,index) => ( 
         <div className="w-full h-55 rounded-xl bg-white mb-4">
           <div className="grid grid-row-3">
@@ -137,11 +146,19 @@ const HistoryStudent = () => {
               </div>
             </div>
           </div>
+            
         </div>
         ))} 
       </div>
-      
-    </div>
+      </div>
+      </div>
+}
+      </>
+
+   
+   
+
+
   );
 };
 

@@ -96,7 +96,8 @@ export default function Login(){
     })
     .catch((err) => {
         console.log('Login:',err.response.data);
-        toast.error(err.response.data);
+        // toast.error(err.response.data);
+        toast.error('ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง กรุณากรอกข้อมูลใหม่อีกครั้ง')
       });
   };
 
@@ -194,16 +195,8 @@ export default function Login(){
             </Button>
 
 
-            {/* link 2 อันล่าง */}
-            <Grid container justifyContent="flex-end" alignItems="flex-end">
-              <Grid item >
-                <Link to={"/forgotpass"} style={{fontSize: "18px",color: "black"}} variant="body2" underline="hover">
-                  <Typography variant="body2">
-                  ลืมรหัสผ่าน?    
-                  </Typography>
-                </Link>
-              </Grid>
-            </Grid>
+         
+           
             <Grid container justifyContent="flex-end" alignItems="flex-end">
               <Grid item>
                 <Link to={"/signupstudent"} style={{fontSize: "18px",color: "black"}} variant="body2" underline="hover">

@@ -7,6 +7,7 @@ import "./Applyjob.css";
 import MyFileBase64 from "../../components/file-base64";
 import moment from "moment"
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 
 export default function Applyjob(req,res){
@@ -20,7 +21,6 @@ export default function Applyjob(req,res){
       'postid':''
       ,'companyid':''
       ,'resume':''
-      // ,'userid':''
     })
   
     const [click, setClick] = useState({
@@ -55,6 +55,7 @@ export default function Applyjob(req,res){
     console.log('this is img 64data : ',sendData.resume)
     Setfinal2("clicked")
     const response = await  axios.post(process.env.REACT_APP_API+'/submitjob/', sendData ,{headers:{'authorization':`Bearer ${user.token}`}} )
+    toast.success('สมัครงานสำเร็จ!')
   }
 
   async function fetchFirstJsonData(value){  

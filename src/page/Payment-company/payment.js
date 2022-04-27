@@ -3,8 +3,68 @@ import Typography from '@material-ui/core/Typography';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import "./Payment-company.css";
 import qr from "../../assets/pics/QR_code_for_mobile_English_Wikipedia.svg.webp";
+import MyFileBase64 from "../../components/file-base64";
+import { useState,useEffect  } from "react";
+import { useSelector } from "react-redux";
+import axios from 'axios';
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function Paymentcompany(){
+
+    let { user } = useSelector((state) => ({ ...state }));
+    const navigate = useNavigate()
+    const [PayData,SetPayData] = useState([])
+    const [value,setValue] = useState({
+        payname :'',
+        paydate : '',
+        slipimg : '',
+      })
+
+
+    const handleChange = (e) => {
+        console.log(e.target.name ,e.target.value )
+        setValue({
+            ...value,
+            [e.target.name]:e.target.value
+          })
+      }
+     
+      //submitbutton
+      async function handleClick  (e)   {
+       
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+          });
+        let valueX = params.id;
+
+        const response = await  axios.put(process.env.REACT_APP_API+`/posts/pay/${valueX}`, value ,{headers:{'authorization':`Bearer ${user.token}`}} )
+        .then((res) => {
+          toast.success("Payment Success");
+          navigate('/homecompany')
+        }).catch((err) =>{
+          toast.error("Error: Something Wrog");
+        })
+     
+    }
+    
+      async function fetchFirstJsonData(valueX)    {
+        const response = await  axios.get(process.env.REACT_APP_API+`/posts/pay/${valueX}`,{headers:{'authorization':`Bearer ${user.token}`}} )
+        console.log('response is ::::', response)
+        SetPayData(response.data)
+        
+    }
+
+    useEffect(()=> {
+        console.log('userid:',user.id)
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+          });
+        let valueX = params.id;
+        fetchFirstJsonData(valueX)    
+
+    },[])
+    
     const notosan1=createTheme({
         typography:{
           subtitle1:{
@@ -68,10 +128,10 @@ export default function Paymentcompany(){
                 <div className="flex space-x-6">
                     <div className="flex flex-col space-y-6 ml-5 mt-3">
                     <Typography variant="body1">
-                        ราคา Post
+                        ราคา Post {PayData.postExpireIn} ชั่วโมง
                         </Typography>
                     <Typography variant="body1">
-                        ราคา Boost Post
+                        ราคา Boost Post {PayData.postExpireIn} ชั่วโมง
                     </Typography>
                     <Typography variant="body1">
                         รวมสุทธิ
@@ -82,17 +142,17 @@ export default function Paymentcompany(){
                     <div className="flex flex-col space-y-5 ml-5 mt-3">
                     <div className="w-64 h-10 bg-white rounded-lg shadow-sm text-center">
                     <Typography variant="body1">
-                        500
+                         {PayData.calPrice}
                         </Typography>
                         </div>
                     <div className="w-64 h-10 bg-white rounded-lg shadow-sm text-center">
                     <Typography variant="body1">
-                        Boost
+                         {PayData.boostPrice}
                         </Typography>
                         </div>
                     <div className="w-64 h-10 bg-white rounded-lg shadow-sm text-center">
                     <Typography variant="body1">
-                        รวม
+                         {PayData.totalPrice}
                         </Typography>
                         </div>
                     </div>
@@ -125,35 +185,25 @@ export default function Paymentcompany(){
                 </div>
             <div class="flex flex-col space-y-7 mt-48">
             <div className="w-full h-10 bg-white rounded-lg shadow-sm text-center">
-                    <input type="text"
+                    <input type="text" name = 'payname' onChange= { handleChange } 
+                    // onKeyPress = {isCharInput}
                         className="text-black text-center text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-full p-2.5"
                         placeholder="สมหญิง เหนี่ยวไกล">
                     </input>
                         </div>
 
                     <div className="w-full h-10 bg-white rounded-lg shadow-sm text-center">
-                    <input type="text"
+                    <input type="text" name = 'paydate'  onChange= { handleChange }
                         className="text-black text-center text-sm rounded-lg ring-2 ring-black focus:ring-black-500 focus:border-black-500 block w-full p-2.5"
                         placeholder="01/12/2022">
                     </input>
                         </div>
 
                     <div className="h-10">
-                        <input class="form-control
-                        block
-                        w-full
-                        py-1.5
-                        text-base
-                        font-normal
-                        text-gray-700
-                        bg-white bg-clip-padding
-                        border border-solid border-gray-300
-                        rounded-lg
-                        transition
-                        ease-in-out
-                        m-0
-                        focus:text-gray-700 focus:bg-white focus:border-green-300 focus:outline-none" type="file" id="formFile"/>
-                    </div>
+                    <MyFileBase64
+                        mutiple={false}
+                        onDone={({ base64 }) => setValue({ ...value, slipimg: base64 })}/>
+                        </div>
 
                 </div>
             </div>
@@ -161,6 +211,7 @@ export default function Paymentcompany(){
             <div className="absolute right-10 bottom-2">
             <button
               class="bg-[#24AB82] drop-shadow-md font-bold text-white text-2xl rounded-xl px-6 py-2.5 mt-5 mb-4 hover:bg-[#1F795E] hover:ring-2 hover:ring-white focus:ring-2 focus:ring-white focus:outline-none "
+            onClick={handleClick}
             >
               <Typography variant="body1">
               ชำระเงิน

@@ -7,6 +7,7 @@ import { getmyPosts, removePost } from "../../api/post";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Postjob from "../Postjob/create-post";
 
 const CompanyPost = () => {
 
@@ -17,18 +18,19 @@ const CompanyPost = () => {
 
 
   useEffect(() => {
-    //code
+ 
     loadPost(user.token);
   }, []);
 
   
   const loadPost = (authtoken) => {
     //code
-    getmyPosts(authtoken) // ดึงข้อมูล Post ทั้งหมดมา 
+    getmyPosts(authtoken) 
       .then(  (res) => {  
-        //code
+      
+        console.log('res',res.data)
         setPost(res.data); //  set ตัวแปร post ให้เท่ากับ ข้อมูล Post ทั้งหมดที่โหลดมา
-        
+        console.log('post',post)
       })
       .catch((err) => {
         //err

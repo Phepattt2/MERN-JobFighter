@@ -78,7 +78,7 @@ const navigate = useNavigate();
                 <div className="no-underline hidden sm:block sm:ml-6 ">
                   <div className="flex space-x-6 items-center ">
                     {navigation.map((item) => (
-                      <Link to = {item.link} className='no-underline'>
+                      <Link to = {item.link} className='no-underline font-sans'>
                       <a
                         key={item.name}
                         link={item.link}
